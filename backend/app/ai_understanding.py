@@ -177,8 +177,28 @@ def understand_rti_text(
     detected_subject = best_subject if best_score >= 1.5 else ""
     concepts = extract_concepts(text, rules)
 
-    # Vagueness check: if text has very few keywords or generic inquiry words only
-    is_vague = len(keywords) <= 1 or (len(keywords) <= 2 and best_score < 1.0)
+    # Vagueness check: detects RTI applications that are too generic to route
+    vague_phrases = [
+        "look into this", "fix it", "action required", "take action",
+        "causing trouble", "resolve this", "do the needful", "problem and fix",
+        "immediately as it is", "look into this issue", "fix it immediately"
+    ]
+    vague_words = {
+        "issue", "problem", "matter", "concern", "trouble", "action", "step",
+        "steps", "needful", "immediate", "immediately", "urgent", "urgently",
+        "fix", "resolve", "help", "look", "causing"
+    }
+
+    has_vague_phrase = any(p in text_lower for p in vague_phrases)
+    vague_keyword_count = sum(1 for k in keywords if k in vague_words)
+    vague_ratio = vague_keyword_count / max(1, len(keywords))
+
+    is_vague = (
+        (has_vague_phrase and best_score < 1.0)
+        or (vague_ratio >= 0.5 and best_score < 1.0)
+        or len(keywords) <= 1
+        or (len(keywords) <= 2 and best_score < 1.0)
+    )
 
     return {
         "detected_subject": detected_subject,
@@ -188,3 +208,4 @@ def understand_rti_text(
         "tokens": tokens,
         "best_subject_score": best_score,
     }
+
