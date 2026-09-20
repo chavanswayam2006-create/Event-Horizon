@@ -108,3 +108,58 @@ def test_acceptance_case_3_ai_surveillance_unknown(client):
 
     assert data["decision"] == "UNKNOWN", f"Expected UNKNOWN, got {data['decision']}"
     assert "not found" in data["reason"].lower() or "no confident" in data["reason"].lower()
+
+
+def test_health_endpoints(client):
+    """Verify both /health and /api/health return status ok and 22 rules."""
+    for path in ["/health", "/api/health"]:
+        response = client.get(path)
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "ok"
+        assert data["service"] == "Event Horizon API"
+        assert data["star_map_rules_count"] == 22
+
+
+def test_extract_pdf_endpoint(client):
+    """Verify genuine PDF text extraction via POST /api/extract-pdf."""
+    import io
+
+    # Valid PDF with machine-readable text
+    raw_pdf = b"""%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 55 >> stream
+BT /F1 12 Tf 72 712 Td (Road repair RTI draft application) Tj ET
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000350 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+426
+%%EOF"""
+
+    response = client.post(
+        "/api/extract-pdf",
+        files={"file": ("rti_query.pdf", io.BytesIO(raw_pdf), "application/pdf")},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "Road repair" in data["extracted_text"]
+    assert data["pages_count"] == 1
+    assert data["filename"] == "rti_query.pdf"
+
+    # Non-PDF rejection
+    response_invalid = client.post(
+        "/api/extract-pdf",
+        files={"file": ("notice.txt", io.BytesIO(b"Hello world"), "text/plain")},
+    )
+    assert response_invalid.status_code == 400

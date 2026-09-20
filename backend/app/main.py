@@ -5,12 +5,15 @@ Provides endpoints for RTI application text analysis, Star Map inspection,
 and health checks with CORS enabled for the React Vite frontend.
 """
 
+import io
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from pypdf import PdfReader
 
 from app.ai_understanding import understand_rti_text
 from app.semantic_match import rank_rules
@@ -101,6 +104,7 @@ class AnalyzeResponse(BaseModel):
     reason: str
 
 
+@app.get("/health")
 @app.get("/api/health")
 def health_check():
     return {
@@ -108,6 +112,42 @@ def health_check():
         "service": "Event Horizon API",
         "star_map_rules_count": len(STAR_MAP),
     }
+
+
+@app.post("/api/extract-pdf")
+async def extract_pdf(file: UploadFile = File(...)):
+    """Extract plain text from an uploaded RTI PDF document."""
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Uploaded file must have a .pdf extension")
+    try:
+        content = await file.read()
+        if len(content) == 0:
+            raise HTTPException(status_code=400, detail="Uploaded PDF file is empty")
+        
+        reader = PdfReader(io.BytesIO(content))
+        extracted_text = ""
+        for page in reader.pages:
+            t = page.extract_text()
+            if t:
+                extracted_text += t + "\n"
+        
+        extracted_text = extracted_text.strip()
+        if not extracted_text:
+            raise HTTPException(
+                status_code=422,
+                detail="No machine-readable text found in PDF. Scanned images require OCR."
+            )
+        
+        return {
+            "filename": file.filename,
+            "extracted_text": extracted_text,
+            "pages_count": len(reader.pages),
+            "char_count": len(extracted_text)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to extract PDF text: {str(e)}")
 
 
 @app.get("/api/starmap", response_model=List[Dict[str, Any]])
@@ -160,3 +200,9 @@ def analyze_rti(request: AnalyzeRequest):
         confidence=eval_result["confidence"],
         reason=eval_result["reason"],
     )
+
+
+# Serve built frontend in unified deployment mode if dist directory exists
+dist_path = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if dist_path.exists():
+    app.mount("/", StaticFiles(directory=str(dist_path), html=True), name="frontend")
