@@ -6,6 +6,8 @@
     "subject": "road repair",
     "departments": ["Municipal Engineering Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["pothole", "potholes", "asphalt", "tarring", "street repair", "road maintenance", "pavement", "cracks"],
     "note": "Local road maintenance, pothole filling, asphalt resurfacing, and street repair within Pune Municipal Corporation limits",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -16,6 +18,8 @@
     "subject": "water supply",
     "departments": ["Water Supply Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["drinking water", "tap water", "water pipeline", "water tanker", "water pressure", "water leakage", "water supply timings"],
     "note": "Potable drinking water pipeline connections, supply timings, low pressure issues, and water tanker distribution in Pune",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -29,6 +33,8 @@
       "Public Health Engineering Department"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["sewage", "gutter", "drain", "drains", "storm water", "overflowing gutter", "manhole", "sewer lines"],
     "note": "Storm water drains, underground sewage lines, overflowing gutter maintenance, and urban flood channel clearing",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -39,6 +45,8 @@
     "subject": "garbage collection",
     "departments": ["Solid Waste Management Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["waste", "trash", "dumping", "dustbin", "sanitation", "solid waste", "garbage truck", "door to door waste"],
     "note": "Door-to-door waste pickup, community trash bins, illegal dumping clearance, and composting center operations in Pune",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -49,6 +57,8 @@
     "subject": "street lights",
     "departments": ["Municipal Electrical Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["street illumination", "lamp post", "LED light", "darkness", "pole light", "electric pole lamp"],
     "note": "Maintenance of public street illumination, non-functional lamp posts, timer repairs, and LED street lighting replacements",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -59,6 +69,8 @@
     "subject": "property tax",
     "departments": ["Municipal Revenue Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["tax assessment", "tax receipt", "house tax", "property valuation", "tax arrears", "municipal tax assessment"],
     "note": "Annual property tax assessment, tax receipt generation, arrears calculation, and municipal property valuation appeals",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -72,6 +84,8 @@
       "Public Health Department"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["civil hospital", "primary health centre", "phc", "medical college", "doctors", "medicine availability", "maternity ward", "healthcare"],
     "note": "Civil hospital administration, primary health centre staffing, medicine availability, and tertiary public healthcare services",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -85,6 +99,8 @@
       "Municipal School Board"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["classroom repair", "school toilet", "school building", "student desk", "drinking water in school", "zilla parishad school"],
     "note": "Public school classroom repair, sanitation facilities, drinking water access in municipal and rural government schools",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -98,6 +114,8 @@
       "Municipal Engineering Department"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["traffic lights", "broken signal", "traffic chowk", "blinker", "signal timing", "red light", "pedestrian crossing"],
     "note": "Traffic junction signals, broken traffic lights, signal timing synchronization, and traffic blinker installation at chowks",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -108,6 +126,8 @@
     "subject": "public transport",
     "departments": ["State Transport Corporation"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["bus route", "msrtc", "bus stop", "city bus", "bus schedule", "passenger pass", "bus depot"],
     "note": "Intercity and peri-urban state bus routes, bus schedule inquiries, bus stop maintenance, and passenger concession passes",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -118,6 +138,8 @@
     "subject": "electricity",
     "departments": ["State Electricity Distribution Co."],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["power cut", "power outage", "transformer", "electric meter", "load shedding", "high tension wire", "mseb", "mahadiscom"],
     "note": "Power outages, transformer failures, electricity meter replacements, and high tension power line clearance",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -128,6 +150,8 @@
     "subject": "land records",
     "departments": ["Revenue Department (Talathi Office)"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["7/12 extract", "satbara", "land title", "talathi", "mutation entry", "ferfar", "land survey", "demarcation"],
     "note": "7/12 extract verification, land title mutation entries, village boundary surveys, and ownership demarcation records",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -138,6 +162,8 @@
     "subject": "building permissions",
     "departments": ["Town Planning Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["building plan", "construction permission", "occupancy certificate", "commencement certificate", "fsi", "town planning", "sanction map"],
     "note": "Sanction of architectural layout plans, floor space index permissions, commencement certificates, and building occupancy permits",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -148,6 +174,8 @@
     "subject": "road repair",
     "departments": ["Nagpur Municipal Corporation Works Dept"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["pothole", "potholes", "asphalt", "tarring", "street repair", "road maintenance", "culvert"],
     "note": "Road resurfacing, pothole repairs, culvert fixes, and tarring of arterial roads in Nagpur city zones",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -158,6 +186,8 @@
     "subject": "water supply",
     "departments": ["Nagpur Water Works Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["drinking water", "tap water", "water pipeline", "water billing", "burst pipe", "water filtration"],
     "note": "Tap water supply pipelines, potable water filtration, water billing issues, and burst pipe restorations in Nagpur",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -171,6 +201,8 @@
       "Public Health Engineering Department"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["sewage", "storm water", "nallah", "wastewater", "gutter", "drainage channels"],
     "note": "Sewage cleaning, storm water drainage channels, nallah deepening, and wastewater discharge control in Nagpur",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -181,6 +213,8 @@
     "subject": "garbage collection",
     "departments": ["Health and Sanitation Department"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["solid waste", "dump yard", "road sweeping", "garbage truck", "trash pickup", "waste disposal"],
     "note": "Solid municipal waste disposal, garbage truck routes, dump yard management, and road sweeping across Nagpur wards",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -191,6 +225,8 @@
     "subject": "street lights",
     "departments": ["Electrical Maintenance Wing"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["street light pole", "darkness", "sodium vapor", "LED conversion", "cable fault"],
     "note": "Public street light poles, darkness complaints, sodium vapor to LED conversions, and cable faults on Nagpur roadways",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -204,6 +240,8 @@
       "State Directorate of Health Services"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["gmc hospital", "hospital beds", "rural hospital", "maternity ward", "disease surveillance", "healthcare"],
     "note": "Government Medical College hospital beds, rural hospital equipment, maternity ward facilities, and disease epidemic surveillance",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -217,6 +255,8 @@
       "Nagpur Municipal Corporation Works Dept"
     ],
     "jurisdiction": "shared",
+    "jurisdiction_type": "shared",
+    "aliases": ["traffic junction", "broken signal", "traffic light", "crossing signal", "intersection"],
     "note": "Traffic junction signals, timer faults, broken red/green lights, and pedestrian crossing signal posts at busy intersections",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -227,6 +267,8 @@
     "subject": "land records",
     "departments": ["Nagpur District Revenue Collectorate"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["agricultural land records", "encumbrance certificate", "talathi mutation", "survey plot partition"],
     "note": "Agricultural land records, encumbrance certificates, Talathi land mutation orders, and survey plot partition disputes",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   },
@@ -237,6 +279,8 @@
     "subject": "building permissions",
     "departments": ["Nagpur Improvement Trust & Town Planning"],
     "jurisdiction": "single",
+    "jurisdiction_type": "single",
+    "aliases": ["building map", "unauthorized construction", "regularization", "sanction permission"],
     "note": "Approval of commercial/residential building maps, unauthorized construction notices, and regularization applications",
     "source": "MVP / Demonstration Jurisdiction Dataset"
   }
