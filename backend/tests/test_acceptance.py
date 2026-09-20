@@ -121,7 +121,7 @@ def test_acceptance_case_3_ai_surveillance_unknown(client):
     assert data["department"] is None
     assert data["confidence"] < AMBIGUOUS_THRESHOLD
     assert "not found" in data["reason"].lower() or "no confident" in data["reason"].lower()
-<<<<<<< HEAD
+    assert data["guidance"] is not None
 
 
 def test_health_endpoints(client):
@@ -177,6 +177,4 @@ startxref
         files={"file": ("notice.txt", io.BytesIO(b"Hello world"), "text/plain")},
     )
     assert response_invalid.status_code == 400
-=======
-    assert data["guidance"] is not None
->>>>>>> 428d356a5c70d6673781b819ee199aa6bdb9d6d4
+

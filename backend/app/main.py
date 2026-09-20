@@ -10,16 +10,11 @@ import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-<<<<<<< HEAD
-from fastapi import FastAPI, HTTPException, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-=======
 
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
->>>>>>> 428d356a5c70d6673781b819ee199aa6bdb9d6d4
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
@@ -210,53 +205,17 @@ def health_check():
     }
 
 
-@app.post("/api/extract-pdf")
-async def extract_pdf(file: UploadFile = File(...)):
-    """Extract plain text from an uploaded RTI PDF document."""
-    if not file.filename or not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Uploaded file must have a .pdf extension")
-    try:
-        content = await file.read()
-        if len(content) == 0:
-            raise HTTPException(status_code=400, detail="Uploaded PDF file is empty")
-        
-        reader = PdfReader(io.BytesIO(content))
-        extracted_text = ""
-        for page in reader.pages:
-            t = page.extract_text()
-            if t:
-                extracted_text += t + "\n"
-        
-        extracted_text = extracted_text.strip()
-        if not extracted_text:
-            raise HTTPException(
-                status_code=422,
-                detail="No machine-readable text found in PDF. Scanned images require OCR."
-            )
-        
-        return {
-            "filename": file.filename,
-            "extracted_text": extracted_text,
-            "pages_count": len(reader.pages),
-            "char_count": len(extracted_text)
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to extract PDF text: {str(e)}")
-
-
 @app.get("/api/starmap", response_model=List[Dict[str, Any]])
 def get_star_map():
     """Return the entire in-memory Star Map array for inspection and path visualization."""
     return STAR_MAP
 
 
-@app.post("/api/extract-pdf", response_model=PdfExtractResponse)
+@app.post("/api/extract-pdf")
 async def extract_pdf(file: UploadFile = File(...)):
     """
     Stateless PDF text extraction endpoint (Spec J):
-      1. Validates file extension, Content-Type, and %PDF magic bytes.
+      1. Validates file extension and %PDF magic bytes.
       2. Validates MAX_PDF_BYTES and MAX_PDF_PAGES limits.
       3. Extracts readable text without OCR.
       4. Returns text to populate user's review box before analysis.
@@ -269,6 +228,9 @@ async def extract_pdf(file: UploadFile = File(...)):
         )
 
     content = await file.read()
+
+    if len(content) == 0:
+        raise HTTPException(status_code=400, detail="Uploaded PDF file is empty")
 
     # Size check
     if len(content) > MAX_PDF_BYTES:
@@ -325,11 +287,14 @@ async def extract_pdf(file: UploadFile = File(...)):
             detail="PDF text could not be extracted. Please paste the RTI text manually.",
         )
 
-    return PdfExtractResponse(
-        text=combined_text,
-        pages=page_count,
-        filename=filename,
-    )
+    return {
+        "filename": filename,
+        "extracted_text": combined_text,
+        "text": combined_text,
+        "pages_count": page_count,
+        "pages": page_count,
+        "char_count": len(combined_text),
+    }
 
 
 @app.post("/api/analyze", response_model=AnalyzeResponse)
