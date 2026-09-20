@@ -1,0 +1,182 @@
+[
+  {
+    "id": "DEMO-001",
+    "category": "CLEAR",
+    "text": "There are large potholes on my street and the road urgently needs repair.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "CLEAR",
+    "expected_departments": ["Municipal Engineering Department"],
+    "expected_rule_id": "EH-001",
+    "rationale": "Strong semantic similarity and keyword overlap for local road maintenance under single jurisdiction."
+  },
+  {
+    "id": "DEMO-002",
+    "category": "CLEAR",
+    "text": "The drinking water supply pipeline in our area has had zero water pressure for three consecutive days.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "CLEAR",
+    "expected_departments": ["Water Supply Department"],
+    "expected_rule_id": "EH-002",
+    "rationale": "Direct match to municipal drinking water supply and pipeline maintenance under single jurisdiction."
+  },
+  {
+    "id": "DEMO-003",
+    "category": "CLEAR",
+    "text": "Garbage has not been collected from our colony waste bins for over a week, causing health hazards.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "CLEAR",
+    "expected_departments": ["Solid Waste Management Department"],
+    "expected_rule_id": "EH-004",
+    "rationale": "High relevance to solid waste management, door-to-door trash pickup, and community bin clearance."
+  },
+  {
+    "id": "DEMO-004",
+    "category": "CLEAR",
+    "text": "Requesting copy of property tax assessment and latest annual valuation receipt for my flat.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "CLEAR",
+    "expected_departments": ["Municipal Revenue Department"],
+    "expected_rule_id": "EH-006",
+    "rationale": "Clear single jurisdiction match for annual municipal property valuation, tax receipts, and assessments."
+  },
+  {
+    "id": "DEMO-005",
+    "category": "CLEAR",
+    "text": "The street light pole outside house number 42 has been non-functional and dark for a month.",
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "expected_status": "CLEAR",
+    "expected_departments": ["Electrical Maintenance Wing"],
+    "expected_rule_id": "EH-018",
+    "rationale": "Specific local street illumination complaint matching Nagpur electrical maintenance wing under single authority."
+  },
+  {
+    "id": "DEMO-006",
+    "category": "AMBIGUOUS",
+    "text": "The traffic signal at the main chowk has been broken for two weeks and nobody has fixed it.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "AMBIGUOUS",
+    "expected_departments": [
+      "Traffic Police Department",
+      "Municipal Engineering Department"
+    ],
+    "expected_rule_id": "EH-009",
+    "rationale": "Traffic signal maintenance is structurally shared between traffic management police and municipal infrastructure works."
+  },
+  {
+    "id": "DEMO-007",
+    "category": "AMBIGUOUS",
+    "text": "The underground storm water drainage and sewage gutter has overflowed onto the public road.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "AMBIGUOUS",
+    "expected_departments": [
+      "Municipal Engineering Department",
+      "Public Health Engineering Department"
+    ],
+    "expected_rule_id": "EH-003",
+    "rationale": "Drainage channels and sewage pipelines involve shared responsibility across municipal works and public health engineering."
+  },
+  {
+    "id": "DEMO-008",
+    "category": "AMBIGUOUS",
+    "text": "Public school building classrooms have leaking roofs and broken sanitation facilities.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "AMBIGUOUS",
+    "expected_departments": [
+      "Zilla Parishad Education Department",
+      "Municipal School Board"
+    ],
+    "expected_rule_id": "EH-008",
+    "rationale": "School physical infrastructure oversight is shared between Zilla Parishad and municipal school administrative boards."
+  },
+  {
+    "id": "DEMO-009",
+    "category": "AMBIGUOUS",
+    "text": "Civil government hospital emergency ward has severe shortage of doctors and critical medicines.",
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "expected_status": "AMBIGUOUS",
+    "expected_departments": [
+      "Nagpur District Health Department",
+      "State Directorate of Health Services"
+    ],
+    "expected_rule_id": "EH-019",
+    "rationale": "Government hospital administration and medicine supply are dual-managed by district and state health directorates."
+  },
+  {
+    "id": "DEMO-010",
+    "category": "AMBIGUOUS",
+    "text": "Road resurfacing work damaged the underground storm water drainage line causing street flooding.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "AMBIGUOUS",
+    "expected_departments": [
+      "Municipal Engineering Department",
+      "Public Health Engineering Department"
+    ],
+    "expected_rule_id": "EH-003",
+    "rationale": "Query mentions both road resurfacing and storm water drainage, creating departmental contention within conflict margin."
+  },
+  {
+    "id": "DEMO-011",
+    "category": "UNKNOWN",
+    "text": "I want records about the new AI surveillance camera project in my area.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "UNKNOWN",
+    "expected_departments": [],
+    "expected_rule_id": null,
+    "rationale": "Novel subject with no corresponding Star Map rule. System safely returns UNKNOWN without guessing."
+  },
+  {
+    "id": "DEMO-012",
+    "category": "UNKNOWN",
+    "text": "Provide licensing policies and regulation guidelines for cryptocurrency trading platforms.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "UNKNOWN",
+    "expected_departments": [],
+    "expected_rule_id": null,
+    "rationale": "Cryptocurrency policy is outside municipal jurisdiction datasets; system refuses to hallucinate a local department."
+  },
+  {
+    "id": "DEMO-013",
+    "category": "UNKNOWN",
+    "text": "Requesting telemetry and launch orbit trajectory records for the newest ISRO lunar exploration probe.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "UNKNOWN",
+    "expected_departments": [],
+    "expected_rule_id": null,
+    "rationale": "Space exploration records are federal/central agency queries unrepresented in municipal Star Map."
+  },
+  {
+    "id": "DEMO-014",
+    "category": "UNKNOWN",
+    "text": "Please look into this issue and fix it immediately as it is causing trouble.",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "expected_status": "UNKNOWN",
+    "expected_departments": [],
+    "expected_rule_id": null,
+    "rationale": "Extremely vague inquiry lacking specific domain keywords or substantive administrative subject matter."
+  },
+  {
+    "id": "DEMO-015",
+    "category": "UNKNOWN",
+    "text": "What are the rules regarding private ownership and flying clearance of vintage fighter jet aircraft?",
+    "state": "Maharashtra",
+    "district": "Nagpur",
+    "expected_status": "UNKNOWN",
+    "expected_departments": [],
+    "expected_rule_id": null,
+    "rationale": "Aviation defense matter completely outside civil municipal jurisdictions."
+  }
+]
