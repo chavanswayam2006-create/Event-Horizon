@@ -25,3 +25,6 @@ frontend/dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Prevent nested repo commits
+Event-Horizon/
