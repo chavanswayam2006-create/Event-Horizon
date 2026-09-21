@@ -40,7 +40,7 @@ MAX_PDF_BYTES: int = 5 * 1024 * 1024  # 5 MB
 MAX_PDF_PAGES: int = 10
 
 # Standardized Disclaimers and Guidance
-DISCLAIMER_TEXT: str = "MVP routing confidence score; demonstration data; not legal advice."
+DISCLAIMER_TEXT: str = "Routing confidence (heuristic); demonstration data; not legal advice."
 
 GUIDANCE_CLEAR: str = (
     "Automatic routing recommendation available. Verify target public authority details "
