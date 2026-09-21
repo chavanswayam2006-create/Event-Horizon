@@ -7,6 +7,7 @@ stateless PDF text extraction, and health checks with CORS enabled for Vite fron
 
 import io
 import json
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -91,17 +92,38 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Enable CORS for local frontend development
+
+@app.middleware("http")
+async def security_and_traceability_middleware(request: Request, call_next):
+    """
+    SEC-01 & Traceability Middleware:
+    1. Attaches a unique request ID (X-Request-ID) to every request context and response header.
+    2. Sets strict HTTP security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy.
+    """
+    req_id = request.headers.get("X-Request-ID") or f"req-{uuid.uuid4().hex[:12]}"
+    request.state.request_id = req_id
+
+    response = await call_next(request)
+
+    response.headers["X-Request-ID"] = req_id
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+
+    return response
+
+
+# Enable CORS with scoped origins for local frontend development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
-        "*",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -179,6 +201,8 @@ class AnalyzeResponse(BaseModel):
     guidance: Optional[str] = None
     warnings: List[str] = []
     disclaimer: str = DISCLAIMER_TEXT
+    request_id: Optional[str] = None
+    engine_version: str = "2.0.0"
 
     # Day 1 Backward Compatibility Fields
     decision: str
@@ -298,7 +322,7 @@ async def extract_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/api/analyze", response_model=AnalyzeResponse)
-def analyze_rti(request: AnalyzeRequest):
+def analyze_rti(request: AnalyzeRequest, http_req: Request):
     """
     Analyzes raw RTI application text:
       1. Validates input bounds & truncation (Spec I)
@@ -356,6 +380,8 @@ def analyze_rti(request: AnalyzeRequest):
         candidates=eval_result["candidates"],
         warnings=all_warnings,
         disclaimer=eval_result["disclaimer"],
+        request_id=getattr(http_req.state, "request_id", None),
+        engine_version="2.0.0",
     )
 
 

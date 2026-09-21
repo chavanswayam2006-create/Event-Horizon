@@ -260,3 +260,34 @@ def test_a10_adversarial_text_around_subject(client):
     assert data["status"] == "CLEAR"
     assert data["department"] == "Municipal Engineering Department"
     assert "EH-001" in data["star_map_rules"]
+
+
+# --- SEC-01 & Traceability Test ---
+def test_security_headers_and_traceability(client):
+    """
+    SEC-01 & Traceability:
+    1. HTTP response must contain security headers (nosniff, DENY, Referrer-Policy).
+    2. Response must include X-Request-ID header and payload request_id & engine_version.
+    """
+    resp = client.post(
+        "/api/analyze",
+        json={
+            "text": "There are large potholes on my street and the road urgently needs repair.",
+            "state": "Maharashtra",
+            "district": "Pune",
+        },
+    )
+    assert resp.status_code == 200
+
+    # Headers
+    assert resp.headers.get("X-Content-Type-Options") == "nosniff"
+    assert resp.headers.get("X-Frame-Options") == "DENY"
+    assert resp.headers.get("Referrer-Policy") == "strict-origin-when-cross-origin"
+    assert "X-Request-ID" in resp.headers
+    assert resp.headers["X-Request-ID"].startswith("req-")
+
+    # Payload
+    data = resp.json()
+    assert "request_id" in data
+    assert data["request_id"] == resp.headers["X-Request-ID"]
+    assert data["engine_version"] == "2.0.0"
