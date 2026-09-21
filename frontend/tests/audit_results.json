@@ -1,0 +1,98 @@
+[
+  {
+    "id": "F-01",
+    "name": "Empty and whitespace submit",
+    "status": "PASS",
+    "details": "Submit button disabled when text is whitespace"
+  },
+  {
+    "id": "F-02",
+    "name": "Road repair (CLEAR scenario)",
+    "status": "PASS",
+    "details": "Status CLEAR with department verified"
+  },
+  {
+    "id": "F-03",
+    "name": "Traffic Signals / Shared Jurisdiction (AMBIGUOUS)",
+    "status": "PASS",
+    "details": "Neutral candidate display with guidance verified"
+  },
+  {
+    "id": "F-04",
+    "name": "Unsupported subject (UNKNOWN)",
+    "status": "PASS",
+    "details": "Zero departments fabricated, guidance verified"
+  },
+  {
+    "id": "F-05",
+    "name": "Valid text PDF upload",
+    "status": "PASS",
+    "details": "Extracted text populated editor"
+  },
+  {
+    "id": "F-06",
+    "name": "Scanned / blank PDF error handling",
+    "status": "PASS",
+    "details": "Actionable error surfaced for textless PDF"
+  },
+  {
+    "id": "F-07",
+    "name": "Invalid file upload error handling",
+    "status": "PASS",
+    "details": "Corrupt header blocked with friendly error"
+  },
+  {
+    "id": "F-08",
+    "name": "API error / timeout recovery action",
+    "status": "PASS",
+    "details": "Recovery action button present in error UI"
+  },
+  {
+    "id": "F-09",
+    "name": "Refresh on result state restoration",
+    "status": "PASS",
+    "details": "Clean reload, default text present (73 chars)"
+  },
+  {
+    "id": "F-10",
+    "name": "Back and forward navigation",
+    "status": "PASS",
+    "details": "No unhandled script crashes on navigation"
+  },
+  {
+    "id": "F-11",
+    "name": "Repeated analysis state leakage",
+    "status": "PASS",
+    "details": "State fully reset between consecutive queries; no stale department"
+  },
+  {
+    "id": "F-12",
+    "name": "Very long input truncation warning",
+    "status": "PASS",
+    "details": "Warning displayed and analysis succeeded without freezing tab"
+  },
+  {
+    "id": "F-13",
+    "name": "Mobile viewport 390px layout",
+    "status": "PASS",
+    "details": "No horizontal overflow on 390px viewport"
+  },
+  {
+    "id": "F-14",
+    "name": "Star Map inspection drawer",
+    "status": "PASS",
+    "details": "Drawer opens, lists 22 rules, and closes cleanly"
+  },
+  {
+    "id": "F-15",
+    "name": "Error recovery action in error banner",
+    "status": "FAIL",
+    "details": "Error banner does not render any retry or dismiss recovery action button [UX-01 DEFECT]"
+  },
+  {
+    "id": "A11Y-01",
+    "name": "axe-core WCAG AA scan",
+    "status": "FAIL",
+    "details": "1 violations: color-contrast"
+  }
+]
