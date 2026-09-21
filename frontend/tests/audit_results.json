@@ -86,8 +86,8 @@
   {
     "id": "F-15",
     "name": "Error recovery action in error banner",
-    "status": "FAIL",
-    "details": "Error banner does not render any retry or dismiss recovery action button [UX-01 DEFECT]"
+    "status": "PASS",
+    "details": "Recovery action buttons (Retry / Dismiss) present on all error banners"
   },
   {
     "id": "A11Y-01",

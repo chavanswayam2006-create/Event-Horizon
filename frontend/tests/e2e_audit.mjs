@@ -175,7 +175,7 @@ async function run() {
 
     // --- F-08: API Timeout / Error handling & recovery action ---
     try {
-      const errorDiv = page.locator('div:has-text("PDF extraction failed"), div:has-text("Analysis Failed")').first();
+      const errorDiv = page.locator('div:has-text("PDF extraction failed"), div:has-text("Analysis Failed"), div:has-text("Analysis Notice")').first();
       const hasActionBtn = await errorDiv.locator('button').count() > 0;
       if (hasActionBtn) {
         recordResult('F-08', 'API error / timeout recovery action', 'PASS', 'Recovery action button present in error UI');
@@ -309,8 +309,11 @@ async function run() {
         }
         return true;
       });
-      // In App.jsx line 246-250: {error && <div className="...">{error}</div>} -> has NO button!
-      recordResult('F-15', 'Error recovery action in error banner', 'FAIL', 'Error banner does not render any retry or dismiss recovery action button [UX-01 DEFECT]');
+      if (hasRecoveryInApp) {
+        recordResult('F-15', 'Error recovery action in error banner', 'PASS', 'Recovery action buttons (Retry / Dismiss) present on all error banners');
+      } else {
+        recordResult('F-15', 'Error recovery action in error banner', 'FAIL', 'Error banner does not render any retry or dismiss recovery action button [UX-01 DEFECT]');
+      }
     } catch (e) {
       recordResult('F-15', 'Error recovery action in error banner', 'FAIL', e.message);
     }
