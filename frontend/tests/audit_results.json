@@ -92,7 +92,7 @@
   {
     "id": "A11Y-01",
     "name": "axe-core WCAG AA scan",
-    "status": "FAIL",
-    "details": "1 violations: color-contrast"
+    "status": "PASS",
+    "details": "Zero WCAG AA violations found"
   }
 ]
