@@ -64,7 +64,7 @@ async function run() {
     // --- F-02: Road repair (CLEAR) ---
     try {
       await page.click('button:has-text("Road Potholes")');
-      const [response] = await Promise.all([
+      const [_response] = await Promise.all([
         page.waitForResponse(resp => resp.url().includes('/api/analyze') && resp.status() === 200),
         page.click('button[type="submit"]'),
       ]);
@@ -297,7 +297,6 @@ async function run() {
       await page.locator('#rti-text').fill('too short text');
       // Temporarily bypass HTML5 minlength/required if needed or test API error
       await page.evaluate(() => {
-        const form = document.querySelector('form');
         const errDiv = document.createElement('div');
         errDiv.className = 'error-test';
       });
