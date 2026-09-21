@@ -53,6 +53,8 @@ export default function App() {
     setError("");
 
     const payload = { text, state, district };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     try {
       let res;
@@ -60,15 +62,22 @@ export default function App() {
         res = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal
         });
-      } catch {
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          throw new Error('Request timed out. The routing service took too long to respond.');
+        }
         res = await fetch("http://127.0.0.1:8000/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal
         });
       }
+
+      clearTimeout(timeoutId);
 
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
@@ -99,7 +108,12 @@ export default function App() {
         if (el) el.scrollIntoView({ behavior: "smooth" });
       }, 100);
     } catch (err) {
-      setError(err.message || "Failed to communicate with backend service.");
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        setError('Request timed out. The routing service took too long to respond.');
+      } else {
+        setError(err.message || "Failed to communicate with backend service.");
+      }
     } finally {
       setLoading(false);
     }
