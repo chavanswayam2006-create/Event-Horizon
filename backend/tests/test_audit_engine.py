@@ -27,6 +27,7 @@ from app.config import (
     CLEAR_THRESHOLD,
     AMBIGUOUS_THRESHOLD,
     AMBIGUOUS_CONFIDENCE_CAP,
+    ENGINE_VERSION,
 )
 
 
@@ -290,4 +291,4 @@ def test_security_headers_and_traceability(client):
     data = resp.json()
     assert "request_id" in data
     assert data["request_id"] == resp.headers["X-Request-ID"]
-    assert data["engine_version"] == "2.0.0"
+    assert data["engine_version"] == ENGINE_VERSION

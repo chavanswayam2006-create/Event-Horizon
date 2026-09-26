@@ -8,14 +8,25 @@ import HomeAnalyzerView from './views/HomeAnalyzerView';
 import StarMapView from './views/StarMapView';
 import EscapeVelocityView from './views/EscapeVelocityView';
 import HowItWorksView from './views/HowItWorksView';
+import EvaluationView from './views/EvaluationView';
 import { ACCEPTANCE_PRESETS } from './constants';
+import { STORAGE_KEY, SUPPORTED_DISPLAY_LANGS } from './i18n';
+
+function loadPersistedLanguage() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return SUPPORTED_DISPLAY_LANGS.includes(saved) ? saved : 'EN';
+  } catch {
+    return 'EN';
+  }
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home-analyzer');
   const [text, setText] = useState(ACCEPTANCE_PRESETS[0].text);
   const [state, setState] = useState("Maharashtra");
   const [district, setDistrict] = useState("Pune");
-  const [selectedLang, setSelectedLang] = useState("EN");
+  const [selectedLang, setSelectedLang] = useState(loadPersistedLanguage);
   const [fontSizeModifier, setFontSizeModifier] = useState("base"); // 'sm' | 'base' | 'lg'
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -24,6 +35,15 @@ export default function App() {
   const [history, setHistory] = useState([]);
   const [isGuidanceOpen, setIsGuidanceOpen] = useState(false);
   const [isAuditOpen, setIsAuditOpen] = useState(false);
+
+  // Persist the chosen display language so it survives reloads
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, selectedLang);
+    } catch {
+      /* storage unavailable: keep in-memory selection */
+    }
+  }, [selectedLang]);
 
   // Pre-load Star Map rules from backend on mount
   useEffect(() => {
@@ -52,7 +72,8 @@ export default function App() {
     setLoading(true);
     setError("");
 
-    const payload = { text, state, district };
+    // `language` is the backend analysis hint derived from the UI selector
+    const payload = { text, state, district, language: selectedLang.toLowerCase() };
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -210,6 +231,10 @@ export default function App() {
         {activeTab === 'how-it-works' && (
           <HowItWorksView onNavigate={(tab) => setActiveTab(tab)} />
         )}
+
+        {activeTab === 'evaluation' && (
+          <EvaluationView lang={selectedLang} />
+        )}
       </main>
 
       {/* Persistent Institutional Footer */}
@@ -227,6 +252,7 @@ export default function App() {
         history={history}
         onSelectHistoryItem={handleSelectHistoryItem}
         onClearHistory={handleClearHistory}
+        lang={selectedLang}
       />
     </div>
   );

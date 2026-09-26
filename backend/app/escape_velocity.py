@@ -22,6 +22,93 @@ from app.config import (
 )
 
 
+def _localized_department_for(candidate: Dict[str, Any], department: Optional[str]) -> Optional[str]:
+    """Look up the localized label of a department on a ranked candidate."""
+    if not department:
+        return None
+    departments = candidate.get("departments", [])
+    localized = candidate.get("departments_localized", [])
+    if department in departments:
+        position = departments.index(department)
+        if position < len(localized) and localized[position]:
+            return localized[position]
+    return department
+
+
+def _annotate_candidate_exclusions(
+    candidates: List[Dict[str, Any]],
+    status: str,
+    top_rule_id: str,
+    top_score: float,
+    is_shared: bool,
+    runner_up_contention: bool,
+    vague_no_subject: bool = False,
+    no_evidence: bool = False,
+) -> None:
+    """
+    Attach an explicit, deterministic "why selected / why not selected" code and
+    sentence to every evaluated candidate so the evidence table can explain
+    exclusions instead of only showing scores (P1 clarity requirement).
+    """
+    for idx, candidate in enumerate(candidates):
+        score = candidate.get("combined_score", 0.0)
+        code = "LOWER_SCORE"
+        reason = (
+            f"Not selected: lower combined score ({score:.2f}) than "
+            f"{top_rule_id} ({top_score:.2f})."
+        )
+
+        if status == "CLEAR" and idx == 0:
+            code = "SELECTED"
+            reason = (
+                f"Selected: highest combined score ({score:.2f}) with a single-jurisdiction rule."
+            )
+        elif score < CANDIDATE_MIN_SCORE:
+            code = "BELOW_MIN_SCORE"
+            reason = (
+                f"Excluded: combined score {score:.2f} is below the minimum candidate score "
+                f"({CANDIDATE_MIN_SCORE})."
+            )
+        elif idx == 0 and status == "UNKNOWN" and vague_no_subject:
+            code = "VAGUE_INPUT"
+            reason = (
+                "Not routed: the input was too vague to identify a subject; no guess was made."
+            )
+        elif idx == 0 and status == "UNKNOWN" and no_evidence:
+            code = "NO_KEYWORD_EVIDENCE"
+            reason = (
+                "Not routed: no subject or keyword overlap backed this match; "
+                "surface similarity alone is insufficient evidence."
+            )
+        elif idx == 0 and status == "UNKNOWN":
+            code = "BELOW_ROUTING_THRESHOLD"
+            reason = (
+                f"Excluded: best available match scored {score:.2f}, below the routing "
+                f"threshold ({AMBIGUOUS_THRESHOLD}); no guess was made."
+            )
+        elif idx == 0 and status == "AMBIGUOUS" and is_shared:
+            code = "SHARED_JURISDICTION"
+            reason = (
+                "Not auto-routed: the matched rule defines structural shared jurisdiction "
+                f"across {len(candidate.get('departments', []))} departments; manual review required."
+            )
+        elif idx == 0 and status == "AMBIGUOUS":
+            code = "BELOW_CLEAR_THRESHOLD"
+            reason = (
+                f"Not auto-routed: score {score:.2f} is below the clear threshold "
+                f"({CLEAR_THRESHOLD})."
+            )
+        elif runner_up_contention and idx == 1:
+            code = "WITHIN_CONFLICT_MARGIN"
+            reason = (
+                f"Not selected: within the conflict margin ({CONFLICT_MARGIN}) of the top "
+                f"candidate {top_rule_id}; adjudication required."
+            )
+
+        candidate["exclusion_code"] = code
+        candidate["exclusion_reason"] = reason
+
+
 def evaluate_decision(
     candidates: List[Dict[str, Any]],
     detected_subject: str = "",
@@ -51,9 +138,12 @@ def evaluate_decision(
             "status": "UNKNOWN",
             "decision": "UNKNOWN",
             "department": None,
+            "department_localized": None,
             "candidate_departments": [],
             "confidence": 0.0,
             "subject": "",
+            "subject_localized": "",
+            "language": "en",
             "star_map_rules": [],
             "jurisdiction_type": "unknown",
             "signals": signals,
@@ -102,13 +192,32 @@ def evaluate_decision(
         conflict_penalty = 0.10
 
     # Trigger (b): Top two candidates belong to distinct departments within CONFLICT_MARGIN
+    # A runner-up from a DIFFERENT district than the query is not a genuine
+    # contender only if the top candidate itself matches the query district.
     runner_up_contention = False
     if len(candidates) >= 2:
         runner_up = candidates[1]
         score_diff = abs(top.get("combined_score", 0.0) - runner_up.get("combined_score", 0.0))
         runner_up_score = runner_up.get("combined_score", 0.0)
+        top_district = top.get("district")
+        runner_district = runner_up.get("district")
+        top_matches_query_district = (
+            query_district is not None
+            and isinstance(top_district, str)
+            and top_district.lower() == query_district.lower()
+        )
+        runner_up_other_district = (
+            query_district is not None
+            and top_matches_query_district
+            and isinstance(runner_district, str)
+            and runner_district.lower() != query_district.lower()
+        )
 
-        if score_diff <= CONFLICT_MARGIN and runner_up_score >= CANDIDATE_MIN_SCORE:
+        if (
+            score_diff <= CONFLICT_MARGIN
+            and runner_up_score >= CANDIDATE_MIN_SCORE
+            and not runner_up_other_district
+        ):
             top_dep_set = set(top_departments)
             runner_dep_set = set(runner_up.get("departments", []))
 
@@ -140,13 +249,34 @@ def evaluate_decision(
                 seen_deps.add(d)
                 candidate_departments.append({
                     "name": d,
+                    "localized_name": _localized_department_for(c, d),
                     "rule_id": c_rule_id,
                     "score": round(c_score, 2),
                 })
 
     # Decision Engine Logic (Spec F)
+    # Rule 0: Routing requires evidence — a subject identified by AI Understanding
+    # or keyword overlap with the matched rule. Vague input with no subject, or a
+    # "match" backed only by surface character similarity, must never be routed
+    # (multilingual safety: char n-gram similarity alone is noise, not evidence).
+    top_keyword_evidence = float(top.get("keyword_overlap", 0.0) or 0.0)
+    no_evidence = not detected_subject and top_keyword_evidence <= 0.0
+    vague_no_subject = is_vague and not detected_subject
+    if vague_no_subject or no_evidence:
+        status = "UNKNOWN"
+        department = None
+        confidence = round(min(adjusted_score, AMBIGUOUS_THRESHOLD - 0.01), 2)
+        reason = (
+            "no confident match: input too vague to route safely"
+            if vague_no_subject
+            else "no confident match: no subject or keyword evidence"
+        )
+        recommended_action = "Human verification before routing"
+        guidance = GUIDANCE_UNKNOWN
+        star_map_rules = [top_rule_id] if raw_score >= CANDIDATE_MIN_SCORE else []
+
     # Rule 1: No valid rule above CANDIDATE_MIN_SCORE or adjusted score < AMBIGUOUS_THRESHOLD
-    if not valid_candidates or raw_score < AMBIGUOUS_THRESHOLD or adjusted_score < AMBIGUOUS_THRESHOLD:
+    elif not valid_candidates or raw_score < AMBIGUOUS_THRESHOLD or adjusted_score < AMBIGUOUS_THRESHOLD:
         status = "UNKNOWN"
         department = None
         confidence = round(adjusted_score, 2)
@@ -166,8 +296,16 @@ def evaluate_decision(
         guidance = GUIDANCE_AMBIGUOUS
         star_map_rules = [c["star_map_rule_id"] for c in candidates[:2] if c.get("star_map_rule_id")]
 
-    # Rule 3: Clear threshold reached, single jurisdiction, no conflict
-    elif adjusted_score >= CLEAR_THRESHOLD and top_jurisdiction_type == "single":
+    # Rule 3: Clear threshold reached, single jurisdiction, no conflict, no district mismatch
+    elif (
+        adjusted_score >= CLEAR_THRESHOLD
+        and top_jurisdiction_type == "single"
+        and not (
+            query_district is not None
+            and isinstance(top.get("district"), str)
+            and top["district"].lower() != query_district.lower()
+        )
+    ):
         status = "CLEAR"
         department = top_departments[0] if top_departments else None
         confidence = round(adjusted_score, 2)
@@ -185,6 +323,13 @@ def evaluate_decision(
         recommended_action = "Human review recommended"
         guidance = GUIDANCE_AMBIGUOUS
         star_map_rules = [top_rule_id]
+
+    # Structured "why selected / why not selected" rationale for every candidate
+    _annotate_candidate_exclusions(
+        candidates, status, top_rule_id, raw_score, is_shared, runner_up_contention,
+        vague_no_subject=vague_no_subject,
+        no_evidence=no_evidence,
+    )
 
     # Build Explainability Templates (Spec H)
     explanation: List[str] = []
@@ -228,7 +373,21 @@ def evaluate_decision(
             explanation.append("Automatic single routing withheld for citizen safety.")
 
     else:  # UNKNOWN
-        if raw_score < CANDIDATE_MIN_SCORE:
+        if vague_no_subject:
+            explanation.append(
+                "The input was flagged as too vague to identify a specific administrative subject."
+            )
+            explanation.append(
+                "Routing is withheld without subject evidence, even when surface similarity scores high."
+            )
+        elif no_evidence:
+            explanation.append(
+                "No subject was identified and the best candidate had zero keyword overlap."
+            )
+            explanation.append(
+                "Routing is withheld when the only signal is surface character similarity."
+            )
+        elif raw_score < CANDIDATE_MIN_SCORE:
             explanation.append(
                 "The requested topic has no reliable match in the Star Map jurisdiction dataset."
             )
@@ -260,9 +419,12 @@ def evaluate_decision(
         "status": status,
         "decision": status,  # Day 1 backward compatibility
         "department": department,
+        "department_localized": _localized_department_for(top, department) if status == "CLEAR" else None,
         "candidate_departments": candidate_departments,
         "confidence": confidence,
         "subject": top_subject if status != "UNKNOWN" else "",
+        "subject_localized": (top.get("subject_localized") or top_subject) if status != "UNKNOWN" else "",
+        "language": top.get("language", "en"),
         "star_map_rules": star_map_rules,
         "jurisdiction_type": top_jurisdiction_type if status != "UNKNOWN" else "unknown",
         "signals": signals_payload,

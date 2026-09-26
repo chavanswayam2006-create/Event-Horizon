@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { t } from '../i18n';
 
 export default function HomeAnalyzerView({
   presets,
@@ -20,6 +21,7 @@ export default function HomeAnalyzerView({
   onInspectStarMap
 }) {
   const [inputTab, setInputTab] = useState('text'); // 'text' | 'upload'
+  const tt = (key) => t(key, selectedLang);
   const [fileName, setFileName] = useState('');
   const [fileLoading, setFileLoading] = useState(false);
   const [uploadError, setUploadError] = useState('');
@@ -31,16 +33,15 @@ export default function HomeAnalyzerView({
     5: false
   });
   const [activeSimState, setActiveSimState] = useState(null); // for simulation tab overrides if user toggles
-  const [prevResult, setPrevResult] = useState(result);
   const [latencyMs, setLatencyMs] = useState(42);
   const fileInputRef = useRef(null);
 
-  if (result !== prevResult) {
-    setPrevResult(result);
+  // Reset transient simulator overrides + fake latency display on each new result.
+  useEffect(() => {
     setActiveSimState(null);
     const computed = 36 + ((result?.detected_subject?.length || 8) % 13);
     setLatencyMs(computed);
-  }
+  }, [result]);
 
   const toggleAccordion = (step) => {
     setActiveAccordion((prev) => ({
@@ -306,7 +307,7 @@ export default function HomeAnalyzerView({
                 }`}
               >
                 <span className="material-symbols-outlined text-[18px]">edit_note</span>
-                <span>Paste RTI Text</span>
+                <span>{tt('analyzer.pasteTab')}</span>
               </button>
 
               <button
@@ -319,7 +320,7 @@ export default function HomeAnalyzerView({
                 }`}
               >
                 <span className="material-symbols-outlined text-[18px]">upload_file</span>
-                <span>Upload Document (PDF/Text)</span>
+                <span>{tt('analyzer.uploadTab')}</span>
               </button>
             </div>
 
@@ -331,10 +332,10 @@ export default function HomeAnalyzerView({
                   className="font-label-md text-label-md font-semibold text-[#121b2e] mb-1.5 flex items-center justify-between"
                 >
                   <span>
-                    RTI Application Contents / Query Body <span className="text-[#ba1a1a] font-bold">*</span>
+                    {tt('analyzer.textLabel')} <span className="text-[#ba1a1a] font-bold">*</span>
                   </span>
                   <span className="text-[#737780] font-body-sm text-body-sm font-normal">
-                    {text.length} characters
+                    {text.length} {tt('analyzer.characters')}
                   </span>
                 </label>
                 <textarea
@@ -436,7 +437,7 @@ export default function HomeAnalyzerView({
 
               <div>
                 <label className="block font-label-sm text-label-sm font-bold text-[#121b2e] mb-1" htmlFor="lang-select">
-                  Preferred Response Language
+                  {tt('analyzer.langLabel')}
                 </label>
                 <div className="relative">
                   <select
@@ -460,7 +461,7 @@ export default function HomeAnalyzerView({
             <div className="bg-[#f1f3ff] rounded-lg p-3 flex items-start gap-2 mb-4 border border-[#c3c6d0]/30">
               <span className="material-symbols-outlined text-[#235eac] text-[18px] flex-shrink-0 mt-0.5">policy</span>
               <p className="font-body-sm text-body-sm text-[#43474f]">
-                <strong className="text-[#121b2e]">Legal &amp; Privacy Notice:</strong> Your application is analyzed to identify subject and jurisdiction signals. Review the recommendation before routing. Personal identifiers are redacted before parsing.
+                <strong className="text-[#121b2e]">{tt('analyzer.notice')}</strong> {tt('analyzer.noticeBody')}
               </p>
             </div>
 
@@ -471,7 +472,7 @@ export default function HomeAnalyzerView({
                 onClick={onClear}
                 className="px-4 py-2 bg-[#f1f3ff] hover:bg-[#e1e8ff] text-[#121b2e] font-label-md text-label-md rounded-lg font-semibold transition-colors"
               >
-                Clear
+                {tt('analyzer.clear')}
               </button>
 
               <div className="flex items-center gap-3">
@@ -487,12 +488,12 @@ export default function HomeAnalyzerView({
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                       </svg>
-                      <span>Evaluating Escape Velocity...</span>
+                      <span>{tt('analyzer.loading')}</span>
                     </>
                   ) : (
                     <>
                       <span className="material-symbols-outlined text-[20px]">bolt</span>
-                      <span>Analyze RTI</span>
+                      <span>{tt('nav.analyze')}</span>
                     </>
                   )}
                 </button>
@@ -707,12 +708,12 @@ export default function HomeAnalyzerView({
               </span>
             </div>
             <h2 className="font-headline-xl text-headline-xl text-[#002548] font-bold">
-              Analysis Results &amp; Decision States
+              {tt('results.title')}
             </h2>
             <p className="font-body-md text-body-md text-[#43474f]">
               {result
-                ? 'Active response evaluated against real Star Map rules and Escape Velocity thresholds.'
-                : 'Run an analysis above or toggle simulated state templates to inspect explainability structures.'}
+                ? tt('results.subtitleActive')
+                : tt('results.subtitleIdle')}
             </p>
           </div>
 
@@ -780,7 +781,7 @@ export default function HomeAnalyzerView({
                         </span>
                       </div>
                       <p className="font-body-md text-body-md text-[#14532D]/90">
-                        Strong evidence supports this routing recommendation. Direct statutory assignment identified.
+                        {tt('decision.clearDesc')}
                       </p>
                     </div>
                   </div>
@@ -788,7 +789,7 @@ export default function HomeAnalyzerView({
                   {/* Heuristic Score Pill */}
                   <div className="bg-[#ffffff] text-[#121b2e] rounded-lg p-3 shadow-xs md:text-right flex flex-col justify-center border border-[#c3c6d0]/40">
                     <span className="font-label-sm text-label-sm text-[#737780] uppercase font-bold tracking-wider">
-                      Routing Confidence
+                      {tt('results.matchScore')}
                     </span>
                     <div className="flex items-baseline md:justify-end gap-1">
                       <span className="font-headline-lg text-headline-lg font-bold text-[#15803D]">
@@ -799,7 +800,7 @@ export default function HomeAnalyzerView({
                       <span className="font-label-md text-label-md text-[#737780]">/ 100</span>
                     </div>
                     <span className="font-body-sm text-body-sm text-[#43474f] italic">
-                      MVP heuristic. Not a probability.
+                      {tt('results.matchScoreNote')}
                     </span>
                   </div>
                 </div>
@@ -811,23 +812,28 @@ export default function HomeAnalyzerView({
                   <div className="lg:col-span-8 flex flex-col gap-2">
                     <div className="flex items-center gap-1.5 text-[#43474f] font-label-sm text-label-sm uppercase font-bold">
                       <span className="material-symbols-outlined text-[16px] text-[#235eac]">domain</span>
-                      <span>Identified Public Authority</span>
+                      <span>{tt('results.authority')}</span>
                     </div>
                     <h3 className="font-headline-xl text-headline-xl text-[#002548] font-bold">
-                      {result?.candidates?.[0]?.departments?.[0] || 'Municipal Engineering Department'}
+                      {result?.department_localized ||
+                        result?.candidates?.[0]?.departments_localized?.[0] ||
+                        result?.candidates?.[0]?.departments?.[0] ||
+                        'Municipal Engineering Department'}
                     </h3>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
                       <div className="px-3 py-1 bg-[#e9edff] rounded-lg text-[#002548] font-label-md text-label-md font-semibold flex items-center gap-1.5">
                         <span className="material-symbols-outlined text-[16px]">subject</span>
                         <span>
-                          Subject Detected:{' '}
+                          {tt('results.subjectDetected')}{' '}
                           <strong>
-                            {result?.detected_subject || 'Road Repair & Pothole Maintenance'}
+                            {result?.subject_localized ||
+                              result?.detected_subject ||
+                              'Road Repair & Pothole Maintenance'}
                           </strong>
                         </span>
                       </div>
                       <div className="px-3 py-1 bg-[#f1f3ff] rounded-lg text-[#121b2e] font-body-sm text-body-sm border border-[#c3c6d0]/40">
-                        Jurisdiction:{' '}
+                        {tt('results.jurisdiction')}{' '}
                         <strong>{result?.candidates?.[0]?.district || district} Local Authority</strong>
                       </div>
                       <div className="px-3 py-1 bg-[#f1f3ff] rounded-lg text-[#121b2e] font-body-sm text-body-sm border border-[#c3c6d0]/40">
@@ -935,7 +941,7 @@ export default function HomeAnalyzerView({
                         </span>
                       </div>
                       <p className="font-body-md text-body-md text-[#78350F]/90">
-                        Multiple plausible departments were identified. Automatic single-department routing is not recommended.
+                        {tt('decision.ambiguousDesc')}
                       </p>
                     </div>
                   </div>
@@ -943,7 +949,7 @@ export default function HomeAnalyzerView({
                   {/* Heuristic Score Pill */}
                   <div className="bg-[#ffffff] text-[#121b2e] rounded-lg p-3 shadow-xs md:text-right flex flex-col justify-center border border-[#c3c6d0]/40">
                     <span className="font-label-sm text-label-sm text-[#737780] uppercase font-bold tracking-wider">
-                      Confidence Level
+                      {tt('results.matchScore')}
                     </span>
                     <div className="flex items-baseline md:justify-end gap-1">
                       <span className="font-headline-lg text-headline-lg font-bold text-[#B7791F]">Medium</span>
@@ -1107,7 +1113,7 @@ export default function HomeAnalyzerView({
                         </span>
                       </div>
                       <p className="font-body-md text-body-md text-[#43474f]">
-                        No sufficiently reliable jurisdiction match was found in the Star Map dataset.
+                        {tt('decision.unknownDesc')}
                       </p>
                     </div>
                   </div>
@@ -1182,7 +1188,7 @@ export default function HomeAnalyzerView({
             <div className="mt-6 bg-[#ffffff] rounded-xl p-5 shadow-xs border border-[#c3c6d0]/60">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                 <p className="font-label-sm text-label-sm font-bold text-[#43474f] uppercase tracking-wider">
-                  Candidate Jurisdiction Evidence ({result.candidates.length} evaluated)
+                  {tt('results.evidence')} ({result.candidates.length} {tt('results.evaluated')})
                 </p>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#e9edff] text-[#002548] border border-[#c3c6d0]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#235eac]" />
@@ -1193,23 +1199,29 @@ export default function HomeAnalyzerView({
                 <table className="w-full text-left text-xs text-[#121b2e]">
                   <thead className="bg-[#f1f3ff] text-[#43474f] font-semibold border-b border-[#c3c6d0]">
                     <tr>
-                      <th className="p-3">Rule ID</th>
-                      <th className="p-3">Subject</th>
-                      <th className="p-3">District</th>
-                      <th className="p-3">Departments</th>
-                      <th className="p-3">Jurisdiction</th>
-                      <th className="p-3 font-mono">Similarity</th>
-                      <th className="p-3 font-mono">Combined</th>
+                      <th className="p-3">{tt('evidence.ruleId')}</th>
+                      <th className="p-3">{tt('evidence.subject')}</th>
+                      <th className="p-3">{tt('evidence.district')}</th>
+                      <th className="p-3">{tt('evidence.departments')}</th>
+                      <th className="p-3">{tt('evidence.jurisdiction')}</th>
+                      <th className="p-3 font-mono">{tt('evidence.similarity')}</th>
+                      <th className="p-3 font-mono">{tt('evidence.combined')}</th>
+                      <th className="p-3">{tt('evidence.exclusion')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#c3c6d0]/40 bg-[#ffffff]">
                     {result.candidates.slice(0, 5).map((cand, cIdx) => (
-                      <tr key={cIdx} className="hover:bg-[#f1f3ff]/60">
+                      <tr key={cIdx} className="hover:bg-[#f1f3ff]/60 align-top">
                         <td className="p-3 font-mono text-[#002548] font-bold">{cand.star_map_rule_id}</td>
-                        <td className="p-3 font-medium text-[#121b2e]">{cand.subject}</td>
+                        <td className="p-3 font-medium text-[#121b2e]">
+                          {cand.subject_localized || cand.subject}
+                        </td>
                         <td className="p-3 text-[#43474f]">{cand.district}</td>
                         <td className="p-3 text-[#002548] font-medium max-w-xs truncate">
-                          {cand.departments?.join(', ')}
+                          {(cand.departments_localized?.length
+                            ? cand.departments_localized
+                            : cand.departments
+                          )?.join(', ')}
                         </td>
                         <td className="p-3">
                           <span
@@ -1224,6 +1236,24 @@ export default function HomeAnalyzerView({
                         </td>
                         <td className="p-3 font-mono text-[#43474f]">{cand.similarity}</td>
                         <td className="p-3 font-mono font-bold text-[#002548]">{cand.combined_score}</td>
+                        <td className="p-3 text-[#43474f] max-w-xs">
+                          {cand.exclusion_code && (
+                            <span
+                              className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold mb-1 ${
+                                cand.exclusion_code === 'SELECTED'
+                                  ? 'bg-[#dcfce7] text-[#15803d]'
+                                  : 'bg-[#f1f3ff] text-[#43474f] border border-[#c3c6d0]'
+                              }`}
+                            >
+                              {cand.exclusion_code}
+                            </span>
+                          )}
+                          {cand.exclusion_reason && (
+                            <p className="text-[11px] leading-snug" title={cand.exclusion_reason}>
+                              {cand.exclusion_reason}
+                            </p>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

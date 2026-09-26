@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Devanagari support for Hindi / Marathi UI (Noto Sans Devanagari is loaded via
+   index.html link tags; system fonts such as Nirmala UI / Mangal serve as
+   graceful offline fallback via the font stack below). */
 
 @theme {
   --color-surface: #f9f9ff;
@@ -61,7 +64,7 @@
 }
 
 :root {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Noto Sans Devanagari', 'Nirmala UI', 'Mangal', system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 
