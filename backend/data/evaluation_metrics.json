@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-09-26T18:04:44+00:00",
+  "engine_version": "2.1.0",
+  "ruleset_version": "2026.09",
+  "cases_total": 43,
+  "status_accuracy": 1.0,
+  "language_detection_accuracy": 1.0,
+  "top_rule_accuracy": 1.0,
+  "department_accuracy": 1.0,
+  "counts": {
+    "status_correct": 43,
+    "language_correct": 43,
+    "rule_scored": 34,
+    "rule_correct": 34,
+    "department_scored": 24,
+    "department_correct": 24
+  },
+  "per_language": {
+    "en": {
+      "rows": 26,
+      "status_accuracy": 1.0,
+      "language_accuracy": 1.0
+    },
+    "hi": {
+      "rows": 9,
+      "status_accuracy": 1.0,
+      "language_accuracy": 1.0
+    },
+    "mr": {
+      "rows": 8,
+      "status_accuracy": 1.0,
+      "language_accuracy": 1.0
+    }
+  },
+  "per_category": {
+    "ambiguous": {
+      "rows": 10,
+      "status_accuracy": 1.0
+    },
+    "clear": {
+      "rows": 24,
+      "status_accuracy": 1.0
+    },
+    "unknown": {
+      "rows": 6,
+      "status_accuracy": 1.0
+    },
+    "vague": {
+      "rows": 3,
+      "status_accuracy": 1.0
+    }
+  },
+  "confusion_matrix": {
+    "CLEAR": {
+      "CLEAR": 24
+    },
+    "AMBIGUOUS": {
+      "AMBIGUOUS": 10
+    },
+    "UNKNOWN": {
+      "UNKNOWN": 9
+    }
+  },
+  "failures": [],
+  "duration_seconds": 0.198
+}

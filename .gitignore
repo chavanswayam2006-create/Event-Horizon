@@ -28,3 +28,9 @@ Thumbs.db
 
 # Prevent nested repo commits
 Event-Horizon/
+
+# Runtime data (generated at runtime / by retrain & evaluation scripts)
+backend/data/audit_history.jsonl
+backend/data/model/
+data/audit_history.jsonl
+data/model/

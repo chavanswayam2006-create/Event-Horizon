@@ -7,6 +7,7 @@ stateless PDF text extraction, and health checks with CORS enabled for Vite fron
 
 import io
 import json
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -20,14 +21,35 @@ from pypdf import PdfReader
 
 import pypdf
 
-from app.ai_understanding import understand_rti_text, validate_rti_input
+from app.ai_understanding import (
+    detect_language,
+    normalize_language_hint,
+    understand_rti_text,
+    validate_rti_input,
+)
+from app.audit_store import (
+    append_audit_record,
+    build_audit_record,
+    clear_audit_records,
+    count_audit_records,
+    list_audit_records,
+)
 from app.config import (
+    AUDIT_DEFAULT_LIMIT,
+    DEFAULT_DATA_DIR,
+    DEFAULT_MODEL_DIR,
     DISCLAIMER_TEXT,
+    ENGINE_VERSION,
+    EVAL_METRICS_FILENAME,
     MAX_PDF_BYTES,
     MAX_PDF_PAGES,
+    RULESET_VERSION,
+    SUPPORTED_LANGUAGES,
+    TRAINING_INDEX_FILENAME,
+    TRAINING_METRICS_FILENAME,
 )
 from app.escape_velocity import evaluate_decision
-from app.semantic_match import init_star_map_index, rank_rules
+from app.semantic_match import init_star_map_index, load_index, rank_rules
 
 # In-memory Star Map storage
 STAR_MAP: List[Dict[str, Any]] = []
@@ -68,9 +90,20 @@ def load_star_map():
         with open(map_file, "r", encoding="utf-8") as f:
             STAR_MAP = json.load(f)
         validate_star_map(STAR_MAP)
-        # Pre-compute TF-IDF vectors once at startup (Performance Rule)
-        init_star_map_index(STAR_MAP)
-        print(f"Successfully loaded and indexed {len(STAR_MAP)} Star Map rules from {map_file}")
+        # Prefer a persisted retrain artifact when it matches the current rules;
+        # otherwise fit the TF-IDF index fresh (Performance Rule: fit once).
+        restored = None
+        if not os.environ.get("EVENT_HORIZON_IGNORE_MODEL_INDEX"):
+            restored = load_index(Path(DEFAULT_MODEL_DIR) / TRAINING_INDEX_FILENAME, STAR_MAP)
+        if restored is not None:
+            init_star_map_index(STAR_MAP, index=restored)
+            print(
+                f"Successfully loaded {len(STAR_MAP)} Star Map rules from {map_file} "
+                f"and restored the persisted TF-IDF index"
+            )
+        else:
+            init_star_map_index(STAR_MAP)
+            print(f"Successfully loaded and indexed {len(STAR_MAP)} Star Map rules from {map_file}")
     else:
         print(f"Warning: Star Map file not found at {map_file}")
 
@@ -123,10 +156,15 @@ class AnalyzeRequest(BaseModel):
     text: str = Field(..., description="Raw text of the RTI application")
     state: Optional[str] = Field("Maharashtra", description="State name")
     district: Optional[str] = Field("Pune", description="District or city name")
+    language: Optional[str] = Field(
+        None,
+        description="Preferred language hint for labels: 'en' | 'hi' | 'mr'. Input language is auto-detected; this hint also drives response label localization.",
+    )
 
 
 class CandidateDepartment(BaseModel):
     name: str
+    localized_name: Optional[str] = None
     rule_id: str
     score: float
 
@@ -150,9 +188,11 @@ class ConflictItem(BaseModel):
 class CandidateItem(BaseModel):
     star_map_rule_id: Optional[str] = None
     subject: Optional[str] = None
+    subject_localized: Optional[str] = None
     state: Optional[str] = None
     district: Optional[str] = None
     departments: List[str] = []
+    departments_localized: List[str] = []
     jurisdiction: str = "single"
     jurisdiction_type: Optional[str] = "single"
     similarity: float = 0.0
@@ -160,15 +200,26 @@ class CandidateItem(BaseModel):
     combined_score: float = 0.0
     note: Optional[str] = None
     source: Optional[str] = None
+    verified: bool = False
+    last_updated: Optional[str] = None
+    version: Optional[str] = None
+    language: Optional[str] = None
+    exclusion_code: Optional[str] = None
+    exclusion_reason: Optional[str] = None
 
 
 class AnalyzeResponse(BaseModel):
     # Day 2 Contract Fields (Spec G)
     status: str
     department: Optional[str] = None
+    department_localized: Optional[str] = None
     candidate_departments: List[CandidateDepartment] = []
     confidence: float
     subject: str = ""
+    subject_localized: str = ""
+    language: str = "en"
+    display_language: str = "en"
+    normalized_text: str = ""
     keywords: List[str] = []
     star_map_rules: List[str] = []
     jurisdiction_type: str = "single"
@@ -186,6 +237,10 @@ class AnalyzeResponse(BaseModel):
     reason: str = ""
     candidates: List[CandidateItem] = []
 
+    # Provenance / versioning
+    engine_version: str = ENGINE_VERSION
+    ruleset_version: str = RULESET_VERSION
+
 
 class PdfExtractResponse(BaseModel):
     text: str
@@ -199,8 +254,12 @@ def health_check():
     return {
         "status": "ok",
         "service": "Event Horizon API",
-        "version": "2.0.0",
+        "version": ENGINE_VERSION,
+        "engine_version": ENGINE_VERSION,
+        "ruleset_version": RULESET_VERSION,
+        "supported_languages": list(SUPPORTED_LANGUAGES),
         "star_map_rules_count": len(STAR_MAP),
+        "audit_records_count": count_audit_records(),
         "disclaimer": DISCLAIMER_TEXT,
     }
 
@@ -301,21 +360,29 @@ async def extract_pdf(file: UploadFile = File(...)):
 def analyze_rti(request: AnalyzeRequest):
     """
     Analyzes raw RTI application text:
-      1. Validates input bounds & truncation (Spec I)
-      2. AI Understanding: extracted keywords, concepts, subject detection (Spec C)
-      3. Semantic Matching: similarity scores against cached Star Map index (Spec C)
-      4. Escape Velocity Engine: decision, conflict resolution, capped confidence, explainability (Spec D, E, F, H)
+      1. Validates input bounds, NFKC-normalizes, and preserves the original text (Spec I)
+      2. Detects input language (English / Hindi / Marathi) with an optional caller hint
+      3. AI Understanding: extracted keywords, concepts, subject detection (Spec C)
+      4. Semantic Matching: similarity scores against the cached per-language Star Map index (Spec C)
+      5. Escape Velocity Engine: decision, conflict resolution, capped confidence, explainability (Spec D, E, F, H)
+      6. Persists an audit record (masked original + normalized text) that survives reloads
     """
-    # 1. Input Validation
-    cleaned_text, input_warnings = validate_rti_input(request.text)
+    # 1. Input Validation & normalization (original text is never discarded)
+    original_text = request.text
+    language_hint = normalize_language_hint(request.language)
+    cleaned_text, input_warnings = validate_rti_input(original_text, language=language_hint)
 
-    # 2. AI Understanding
-    ai_result = understand_rti_text(cleaned_text, STAR_MAP)
+    # 2. Language detection (hint only breaks ties for Devanagari text)
+    detected_language = detect_language(cleaned_text, hint=language_hint)
+    display_language = language_hint or detected_language
+
+    # 3. AI Understanding
+    ai_result = understand_rti_text(cleaned_text, STAR_MAP, language=detected_language)
     detected_subject = ai_result["detected_subject"]
     keywords = ai_result["keywords"]
     is_vague = ai_result["is_vague"]
 
-    # 3. Semantic Ranking against cached Star Map
+    # 4. Semantic Ranking against cached Star Map
     candidates = rank_rules(
         application_text=cleaned_text,
         rules=STAR_MAP,
@@ -323,9 +390,11 @@ def analyze_rti(request: AnalyzeRequest):
         district=request.district,
         query_keywords=keywords,
         detected_subject=detected_subject,
+        language=detected_language,
+        display_language=display_language,
     )
 
-    # 4. Escape Velocity Decision Engine
+    # 5. Escape Velocity Decision Engine
     eval_result = evaluate_decision(
         candidates=candidates,
         detected_subject=detected_subject,
@@ -336,13 +405,19 @@ def analyze_rti(request: AnalyzeRequest):
     # Combine input warnings with result warnings
     all_warnings = input_warnings + eval_result.get("warnings", [])
 
-    return AnalyzeResponse(
+    response = AnalyzeResponse(
         status=eval_result["status"],
         decision=eval_result["status"],
         department=eval_result["department"],
+        department_localized=eval_result.get("department_localized"),
         candidate_departments=eval_result["candidate_departments"],
         confidence=eval_result["confidence"],
         subject=eval_result["subject"] or detected_subject,
+        subject_localized=eval_result.get("subject_localized")
+        or (eval_result["subject"] or detected_subject),
+        language=detected_language,
+        display_language=display_language,
+        normalized_text=cleaned_text,
         detected_subject=eval_result["subject"] or detected_subject,
         keywords=keywords,
         star_map_rules=eval_result["star_map_rules"],
@@ -356,7 +431,86 @@ def analyze_rti(request: AnalyzeRequest):
         candidates=eval_result["candidates"],
         warnings=all_warnings,
         disclaimer=eval_result["disclaimer"],
+        engine_version=ENGINE_VERSION,
+        ruleset_version=RULESET_VERSION,
     )
+
+    # 6. Persist audit record (never lets storage failures break analysis)
+    try:
+        record = build_audit_record(
+            original_text=original_text,
+            normalized_text=cleaned_text,
+            input_language=detected_language,
+            display_language=display_language,
+            detected_subject=response.detected_subject,
+            star_map_rule_ids=response.star_map_rules,
+            candidate_departments=[d.model_dump() for d in response.candidate_departments],
+            match_score=response.confidence,
+            jurisdiction_state=request.state,
+            jurisdiction_type=response.jurisdiction_type,
+            decision=response.decision,
+            reason=response.reason,
+            district=request.district,
+            snapshot=response.model_dump(),
+        )
+        append_audit_record(record)
+    except Exception as exc:  # pragma: no cover - defensive only
+        print(f"Audit store warning: analyze succeeded but audit write failed ({exc})")
+
+    return response
+
+
+@app.get("/api/audit/history")
+def get_audit_history(limit: int = AUDIT_DEFAULT_LIMIT):
+    """Return persisted audit records so history survives page reloads."""
+    records = list_audit_records(limit=limit)
+    return {"count": len(records), "records": records}
+
+
+@app.delete("/api/audit/history")
+def delete_audit_history():
+    """Clear all persisted audit records."""
+    deleted = clear_audit_records()
+    return {"deleted": deleted}
+
+
+def _read_json_if_exists(path: Path) -> Optional[Dict[str, Any]]:
+    """Read a JSON artifact if present; never raises."""
+    try:
+        if not path.exists():
+            return None
+        with open(path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except Exception as exc:  # pragma: no cover - defensive only
+        print(f"Evaluation dashboard warning: could not read {path} ({exc})")
+        return None
+
+
+@app.get("/api/evaluation")
+def get_evaluation_dashboard():
+    """
+    Evaluation dashboard data: metrics produced by
+    `python scripts/retrain.py` and `python scripts/evaluate.py`.
+    Returns nulls for artifacts that have not been generated yet.
+    """
+    evaluation = _read_json_if_exists(Path(DEFAULT_DATA_DIR) / EVAL_METRICS_FILENAME)
+    training = _read_json_if_exists(Path(DEFAULT_MODEL_DIR) / TRAINING_METRICS_FILENAME)
+    index_artifact = Path(DEFAULT_MODEL_DIR) / TRAINING_INDEX_FILENAME
+    return {
+        "engine_version": ENGINE_VERSION,
+        "ruleset_version": RULESET_VERSION,
+        "evaluation": evaluation,
+        "training": training,
+        "index_artifact": {
+            "path": str(index_artifact),
+            "exists": index_artifact.exists(),
+        },
+        "star_map_rules_count": len(STAR_MAP),
+        "generated_at": max(
+            (m.get("generated_at") for m in (evaluation, training) if m),
+            default=None,
+        ),
+    }
 
 
 # Serve built frontend in unified deployment mode if dist directory exists

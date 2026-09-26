@@ -1,5 +1,6 @@
 import React from 'react';
 import CivicEmblem from './CivicEmblem';
+import { t } from '../i18n';
 
 export default function Navbar({
   activeTab,
@@ -13,10 +14,11 @@ export default function Navbar({
   historyCount = 0
 }) {
   const navItems = [
-    { id: 'home-analyzer', label: 'Home / Analyzer' },
-    { id: 'star-map', label: 'Star Map' },
-    { id: 'escape-velocity-engine', label: 'Escape Velocity Engine' },
-    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'home-analyzer', label: t('nav.home', selectedLang) },
+    { id: 'star-map', label: t('nav.starMap', selectedLang) },
+    { id: 'escape-velocity-engine', label: t('nav.engine', selectedLang) },
+    { id: 'how-it-works', label: t('nav.how', selectedLang) },
+    { id: 'evaluation', label: t('nav.evaluation', selectedLang) },
   ];
 
   return (
@@ -132,7 +134,7 @@ export default function Navbar({
             className="px-3 py-1.5 font-label-md text-label-md text-[#43474f] hover:text-[#121b2e] hover:bg-[#f1f3ff] rounded flex items-center gap-1"
           >
             <span className="material-symbols-outlined text-[16px]">menu_book</span>
-            <span>RTI Guidance</span>
+            <span>{t('nav.guidance', selectedLang)}</span>
           </button>
 
           <button
@@ -141,7 +143,7 @@ export default function Navbar({
             className="px-3 py-1.5 font-label-md text-label-md text-[#43474f] hover:text-[#121b2e] hover:bg-[#f1f3ff] rounded flex items-center gap-1 relative"
           >
             <span className="material-symbols-outlined text-[16px]">history</span>
-            <span>Audit &amp; History</span>
+            <span>{t('nav.audit', selectedLang)}</span>
             {historyCount > 0 && (
               <span className="ml-1 px-1.5 py-0.2 bg-[#235eac] text-white text-[10px] font-bold rounded-full">
                 {historyCount}
@@ -164,7 +166,7 @@ export default function Navbar({
             <span className="w-1.5 h-full bg-[#ffddb8] absolute left-0 top-0" />
             <span className="pl-1.5 flex items-center gap-1">
               <span className="material-symbols-outlined text-[18px]">bolt</span>
-              <span>Analyze RTI</span>
+              <span>{t('nav.analyze', selectedLang)}</span>
             </span>
           </button>
 

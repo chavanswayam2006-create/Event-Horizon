@@ -4,24 +4,108 @@
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "road repair",
-    "departments": ["Municipal Engineering Department"],
+    "departments": [
+      "Municipal Engineering Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["pothole", "potholes", "asphalt", "tarring", "street repair", "road maintenance", "pavement", "cracks"],
+    "aliases": [
+      "pothole",
+      "potholes",
+      "asphalt",
+      "tarring",
+      "street repair",
+      "road maintenance",
+      "pavement",
+      "cracks"
+    ],
     "note": "Local road maintenance, pothole filling, asphalt resurfacing, and street repair within Pune Municipal Corporation limits",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "road repair",
+      "hi": "सड़क मरम्मत",
+      "mr": "रस्ता दुरुस्ती"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "गड्ढे",
+        "सड़क की मरम्मत",
+        "सड़क निर्माण",
+        "डामर",
+        "फुटपाथ",
+        "सड़क रखरखाव"
+      ],
+      "mr": [
+        "खड्डे",
+        "रस्ता दुरुस्ती",
+        "रस्ता रखभाल",
+        "डांबरीकरण",
+        "फुटपाथ"
+      ]
+    },
+    "departments_i18n": {
+      "Municipal Engineering Department": {
+        "hi": "नगरपालिका अभियांत्रिकी विभाग",
+        "mr": "महापालिका अभियांत्रिकी विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-002",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "water supply",
-    "departments": ["Water Supply Department"],
+    "departments": [
+      "Water Supply Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["drinking water", "tap water", "water pipeline", "water tanker", "water pressure", "water leakage", "water supply timings"],
+    "aliases": [
+      "drinking water",
+      "tap water",
+      "water pipeline",
+      "water tanker",
+      "water pressure",
+      "water leakage",
+      "water supply timings"
+    ],
     "note": "Potable drinking water pipeline connections, supply timings, low pressure issues, and water tanker distribution in Pune",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "water supply",
+      "hi": "जल आपूर्ति",
+      "mr": "पाणीपुरवठा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "पेयजल",
+        "नल का पानी",
+        "पानी की पाइपलाइन",
+        "पानी की टंकी",
+        "पानी का दबाव",
+        "पानी का रिसाव"
+      ],
+      "mr": [
+        "पिण्याचे पाणी",
+        "नळ पाणी",
+        "पाण्याची पाइपलाइन",
+        "पाणी टंचाई",
+        "पाण्याचा दाब",
+        "पाणी गळती"
+      ]
+    },
+    "departments_i18n": {
+      "Water Supply Department": {
+        "hi": "जल आपूर्ति विभाग",
+        "mr": "पाणीपुरवठा विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-003",
@@ -34,45 +118,213 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["sewage", "gutter", "drain", "drains", "storm water", "overflowing gutter", "manhole", "sewer lines"],
+    "aliases": [
+      "sewage",
+      "gutter",
+      "drain",
+      "drains",
+      "storm water",
+      "overflowing gutter",
+      "manhole",
+      "sewer lines"
+    ],
     "note": "Storm water drains, underground sewage lines, overflowing gutter maintenance, and urban flood channel clearing",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "drainage",
+      "hi": "जल निकासी",
+      "mr": "पाणी निचरा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "सीवेज",
+        "गटर",
+        "नाली",
+        "बारिश का पानी",
+        "सीवर लाइन",
+        "मैनहोल",
+        "जलभराव"
+      ],
+      "mr": [
+        "सांडपाणी",
+        "गटार",
+        "नाले",
+        "पावसाचे पाणी",
+        "मॅनहोल",
+        "गटार तुंबणे",
+        "पाणी साचणे"
+      ]
+    },
+    "departments_i18n": {
+      "Municipal Engineering Department": {
+        "hi": "नगरपालिका अभियांत्रिकी विभाग",
+        "mr": "महापालिका अभियांत्रिकी विभाग"
+      },
+      "Public Health Engineering Department": {
+        "hi": "लोक स्वास्थ्य अभियांत्रिकी विभाग",
+        "mr": "सार्वजनिक आरोग्य अभियांत्रिकी विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-004",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "garbage collection",
-    "departments": ["Solid Waste Management Department"],
+    "departments": [
+      "Solid Waste Management Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["waste", "trash", "dumping", "dustbin", "sanitation", "solid waste", "garbage truck", "door to door waste"],
+    "aliases": [
+      "waste",
+      "trash",
+      "dumping",
+      "dustbin",
+      "sanitation",
+      "solid waste",
+      "garbage truck",
+      "door to door waste"
+    ],
     "note": "Door-to-door waste pickup, community trash bins, illegal dumping clearance, and composting center operations in Pune",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "garbage collection",
+      "hi": "कचरा संग्रहण",
+      "mr": "कचरा संकलन"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "कचरा",
+        "कूड़ा",
+        "डस्टबिन",
+        "सफाई",
+        "कचरा ट्रक",
+        "ठोस अपशिष्ट"
+      ],
+      "mr": [
+        "कचरा",
+        "घनकचरा",
+        "कचरा गाडी",
+        "स्वच्छता",
+        "कचराकुंडी",
+        "कचरा उचल"
+      ]
+    },
+    "departments_i18n": {
+      "Solid Waste Management Department": {
+        "hi": "ठोस अपशिष्ट प्रबंधन विभाग",
+        "mr": "घनकचरा व्यवस्थापन विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-005",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "street lights",
-    "departments": ["Municipal Electrical Department"],
+    "departments": [
+      "Municipal Electrical Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["street illumination", "lamp post", "LED light", "darkness", "pole light", "electric pole lamp"],
+    "aliases": [
+      "street illumination",
+      "lamp post",
+      "LED light",
+      "darkness",
+      "pole light",
+      "electric pole lamp"
+    ],
     "note": "Maintenance of public street illumination, non-functional lamp posts, timer repairs, and LED street lighting replacements",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "street lights",
+      "hi": "स्ट्रीट लाइट",
+      "mr": "पथदिवे"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "बत्ती",
+        "लाइट खंभा",
+        "अंधेरा",
+        "एलईडी लाइट",
+        "बिजली का खंभा"
+      ],
+      "mr": [
+        "पथदिवे",
+        "दिव्याचा खांब",
+        "अंधार",
+        "एलईडी दिवे",
+        "वीज खांब"
+      ]
+    },
+    "departments_i18n": {
+      "Municipal Electrical Department": {
+        "hi": "नगरपालिका विद्युत विभाग",
+        "mr": "महापालिका विद्युत विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-006",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "property tax",
-    "departments": ["Municipal Revenue Department"],
+    "departments": [
+      "Municipal Revenue Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["tax assessment", "tax receipt", "house tax", "property valuation", "tax arrears", "municipal tax assessment"],
+    "aliases": [
+      "tax assessment",
+      "tax receipt",
+      "house tax",
+      "property valuation",
+      "tax arrears",
+      "municipal tax assessment"
+    ],
     "note": "Annual property tax assessment, tax receipt generation, arrears calculation, and municipal property valuation appeals",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "property tax",
+      "hi": "संपत्ति कर",
+      "mr": "मालमत्ता कर"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "हाउस टैक्स",
+        "टैक्स रसीद",
+        "कर मूल्यांकन",
+        "संपत्ति कर बकाया",
+        "मकान कर"
+      ],
+      "mr": [
+        "घरपट्टी",
+        "कर पावती",
+        "मालमत्ता मूल्यांकन",
+        "मालमत्ता कर थकबाकी",
+        "मालमत्ता कर आकारणी"
+      ]
+    },
+    "departments_i18n": {
+      "Municipal Revenue Department": {
+        "hi": "नगरपालिका राजस्व विभाग",
+        "mr": "महापालिका महसूल विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-007",
@@ -85,9 +337,54 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["civil hospital", "primary health centre", "phc", "medical college", "doctors", "medicine availability", "maternity ward", "healthcare"],
+    "aliases": [
+      "civil hospital",
+      "primary health centre",
+      "phc",
+      "medical college",
+      "doctors",
+      "medicine availability",
+      "maternity ward",
+      "healthcare"
+    ],
     "note": "Civil hospital administration, primary health centre staffing, medicine availability, and tertiary public healthcare services",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "government hospital",
+      "hi": "सरकारी अस्पताल",
+      "mr": "शासकीय रुग्णालय"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "सामुदायिक स्वास्थ्य केंद्र",
+        "प्राथमिक स्वास्थ्य केंद्र",
+        "डॉक्टर",
+        "दवा उपलब्धता",
+        "प्रसूति वार्ड",
+        "अस्पताल"
+      ],
+      "mr": [
+        "प्राथमिक आरोग्य केंद्र",
+        "डॉक्टर",
+        "औषधे",
+        "प्रसूती विभाग",
+        "रुग्णालय",
+        "आरोग्य सुविधा"
+      ]
+    },
+    "departments_i18n": {
+      "District Health Department": {
+        "hi": "जिला स्वास्थ्य विभाग",
+        "mr": "जिल्हा आरोग्य विभाग"
+      },
+      "Public Health Department": {
+        "hi": "लोक स्वास्थ्य विभाग",
+        "mr": "सार्वजनिक आरोग्य विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-008",
@@ -100,9 +397,50 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["classroom repair", "school toilet", "school building", "student desk", "drinking water in school", "zilla parishad school"],
+    "aliases": [
+      "classroom repair",
+      "school toilet",
+      "school building",
+      "student desk",
+      "drinking water in school",
+      "zilla parishad school"
+    ],
     "note": "Public school classroom repair, sanitation facilities, drinking water access in municipal and rural government schools",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "school infrastructure",
+      "hi": "स्कूल भवन एवं सुविधाएं",
+      "mr": "शाळा इमारत व सुविधा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "स्कूल भवन",
+        "कक्षा मरम्मत",
+        "स्कूल शौचालय",
+        "जिला परिषद स्कूल",
+        "स्कूल की छत"
+      ],
+      "mr": [
+        "शाळेची इमारत",
+        "वर्गखोली दुरुस्ती",
+        "शाळेचे स्वच्छतागृह",
+        "जिल्हा परिषद शाळा",
+        "शाळेचे छत"
+      ]
+    },
+    "departments_i18n": {
+      "Zilla Parishad Education Department": {
+        "hi": "जिला परिषद शिक्षा विभाग",
+        "mr": "जिल्हा परिषद शिक्षण विभाग"
+      },
+      "Municipal School Board": {
+        "hi": "नगरपालिका विद्यालय मंडल",
+        "mr": "महापालिका शाळा मंडळ"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-009",
@@ -115,81 +453,371 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["traffic lights", "broken signal", "traffic chowk", "blinker", "signal timing", "red light", "pedestrian crossing"],
+    "aliases": [
+      "traffic lights",
+      "broken signal",
+      "traffic chowk",
+      "blinker",
+      "signal timing",
+      "red light",
+      "pedestrian crossing"
+    ],
     "note": "Traffic junction signals, broken traffic lights, signal timing synchronization, and traffic blinker installation at chowks",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "traffic signals",
+      "hi": "यातायात सिग्नल",
+      "mr": "वाहतूक सिग्नल"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "ट्रैफिक लाइट",
+        "खराब सिग्नल",
+        "चौक",
+        "सिग्नल खराबी",
+        "लाल बत्ती"
+      ],
+      "mr": [
+        "वाहतूक दिवे",
+        "बिघडलेला सिग्नल",
+        "चौक",
+        "सिग्नल बंद",
+        "वाहतूक कोंडी"
+      ]
+    },
+    "departments_i18n": {
+      "Traffic Police Department": {
+        "hi": "यातायात पुलिस विभाग",
+        "mr": "वाहतूक पोलीस विभाग"
+      },
+      "Municipal Engineering Department": {
+        "hi": "नगरपालिका अभियांत्रिकी विभाग",
+        "mr": "महापालिका अभियांत्रिकी विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-010",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "public transport",
-    "departments": ["State Transport Corporation"],
+    "departments": [
+      "State Transport Corporation"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["bus route", "msrtc", "bus stop", "city bus", "bus schedule", "passenger pass", "bus depot"],
+    "aliases": [
+      "bus route",
+      "msrtc",
+      "bus stop",
+      "city bus",
+      "bus schedule",
+      "passenger pass",
+      "bus depot"
+    ],
     "note": "Intercity and peri-urban state bus routes, bus schedule inquiries, bus stop maintenance, and passenger concession passes",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "public transport",
+      "hi": "सार्वजनिक परिवहन",
+      "mr": "सार्वजनिक वाहतूक"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "बस मार्ग",
+        "बस स्टॉप",
+        "राज्य परिवहन",
+        "बस पास",
+        "बस समय सारणी",
+        "बस डिपो"
+      ],
+      "mr": [
+        "बस मार्ग",
+        "बस थांबा",
+        "राज्य परिवहन",
+        "बस पास",
+        "बस वेळापत्रक",
+        "बस आगार"
+      ]
+    },
+    "departments_i18n": {
+      "State Transport Corporation": {
+        "hi": "राज्य परिवहन निगम",
+        "mr": "राज्य परिवहन महामंडळ"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-011",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "electricity",
-    "departments": ["State Electricity Distribution Co."],
+    "departments": [
+      "State Electricity Distribution Co."
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["power cut", "power outage", "transformer", "electric meter", "load shedding", "high tension wire", "mseb", "mahadiscom"],
+    "aliases": [
+      "power cut",
+      "power outage",
+      "transformer",
+      "electric meter",
+      "load shedding",
+      "high tension wire",
+      "mseb",
+      "mahadiscom"
+    ],
     "note": "Power outages, transformer failures, electricity meter replacements, and high tension power line clearance",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "electricity",
+      "hi": "बिजली",
+      "mr": "वीज पुरवठा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "बिजली कटौती",
+        "ट्रांसफार्मर",
+        "बिजली मीटर",
+        "लोड शेडिंग",
+        "बिजली का तार",
+        "महावितरण"
+      ],
+      "mr": [
+        "वीज खंड",
+        "ट्रान्सफॉर्मर",
+        "वीज मीटर",
+        "भारनियमन",
+        "वीज वाहिनी",
+        "महावितरण"
+      ]
+    },
+    "departments_i18n": {
+      "State Electricity Distribution Co.": {
+        "hi": "राज्य विद्युत वितरण कंपनी",
+        "mr": "राज्य विद्युत वितरण कंपनी"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-012",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "land records",
-    "departments": ["Revenue Department (Talathi Office)"],
+    "departments": [
+      "Revenue Department (Talathi Office)"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["7/12 extract", "satbara", "land title", "talathi", "mutation entry", "ferfar", "land survey", "demarcation"],
+    "aliases": [
+      "7/12 extract",
+      "satbara",
+      "land title",
+      "talathi",
+      "mutation entry",
+      "ferfar",
+      "land survey",
+      "demarcation"
+    ],
     "note": "7/12 extract verification, land title mutation entries, village boundary surveys, and ownership demarcation records",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "land records",
+      "hi": "भूमि अभिलेख",
+      "mr": "जमीन अभिलेख"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "भूमि स्वामित्व",
+        "भूमि सीमांकन",
+        "तलाठी",
+        "भूमि नामांतरण",
+        "खसरा",
+        "भूखंड"
+      ],
+      "mr": [
+        "सातबारा",
+        "जमीन मोजणी",
+        "तलाठी",
+        "फेरफार",
+        "जमीन हद्द",
+        "गाव नकाशा"
+      ]
+    },
+    "departments_i18n": {
+      "Revenue Department (Talathi Office)": {
+        "hi": "राजस्व विभाग (तलाठी कार्यालय)",
+        "mr": "महसूल विभाग (तलाठी कार्यालय)"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-013",
     "state": "Maharashtra",
     "district": "Pune",
     "subject": "building permissions",
-    "departments": ["Town Planning Department"],
+    "departments": [
+      "Town Planning Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["building plan", "construction permission", "occupancy certificate", "commencement certificate", "fsi", "town planning", "sanction map"],
+    "aliases": [
+      "building plan",
+      "construction permission",
+      "occupancy certificate",
+      "commencement certificate",
+      "fsi",
+      "town planning",
+      "sanction map"
+    ],
     "note": "Sanction of architectural layout plans, floor space index permissions, commencement certificates, and building occupancy permits",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "building permissions",
+      "hi": "भवन निर्माण अनुमति",
+      "mr": "बांधकाम परवाने"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "भवन नक्शा",
+        "निर्माण अनुमति",
+        "अधिभोग प्रमाणपत्र",
+        "नगर नियोजन",
+        "मंजूर नक्शा",
+        "एफएसआई"
+      ],
+      "mr": [
+        "बांधकाम नकाशा",
+        "बांधकाम परवाना",
+        "भोगवटा प्रमाणपत्र",
+        "नगररचना",
+        "मंजूर नकाशा"
+      ]
+    },
+    "departments_i18n": {
+      "Town Planning Department": {
+        "hi": "नगर नियोजन विभाग",
+        "mr": "नगररचना विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-014",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "road repair",
-    "departments": ["Nagpur Municipal Corporation Works Dept"],
+    "departments": [
+      "Nagpur Municipal Corporation Works Dept"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["pothole", "potholes", "asphalt", "tarring", "street repair", "road maintenance", "culvert"],
+    "aliases": [
+      "pothole",
+      "potholes",
+      "asphalt",
+      "tarring",
+      "street repair",
+      "road maintenance",
+      "culvert"
+    ],
     "note": "Road resurfacing, pothole repairs, culvert fixes, and tarring of arterial roads in Nagpur city zones",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "road repair",
+      "hi": "सड़क मरम्मत",
+      "mr": "रस्ता दुरुस्ती"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "गड्ढे",
+        "डामर",
+        "सड़क निर्माण",
+        "पुलिया",
+        "सड़क की मरम्मत"
+      ],
+      "mr": [
+        "खड्डे",
+        "डांबरीकरण",
+        "पुलिया",
+        "रस्ता दुरुस्ती",
+        "रस्ता काँक्रीटीकरण"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur Municipal Corporation Works Dept": {
+        "hi": "नागपुर नगर निगम कार्य विभाग",
+        "mr": "नागपूर महानगरपालिका कामकाज विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-015",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "water supply",
-    "departments": ["Nagpur Water Works Department"],
+    "departments": [
+      "Nagpur Water Works Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["drinking water", "tap water", "water pipeline", "water billing", "burst pipe", "water filtration"],
+    "aliases": [
+      "drinking water",
+      "tap water",
+      "water pipeline",
+      "water billing",
+      "burst pipe",
+      "water filtration"
+    ],
     "note": "Tap water supply pipelines, potable water filtration, water billing issues, and burst pipe restorations in Nagpur",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "water supply",
+      "hi": "जल आपूर्ति",
+      "mr": "पाणीपुरवठा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "नल का पानी",
+        "पानी की पाइपलाइन",
+        "पानी का बिल",
+        "फूटी पाइप",
+        "जल शोधन"
+      ],
+      "mr": [
+        "नळ पाणी",
+        "पाण्याची पाइपलाइन",
+        "पाणी बिल",
+        "फुटलेली पाइपलाइन",
+        "पाणी शुद्धीकरण"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur Water Works Department": {
+        "hi": "नागपुर जल कार्य विभाग",
+        "mr": "नागपूर पाणीपुरवठा विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-016",
@@ -202,33 +830,151 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["sewage", "storm water", "nallah", "wastewater", "gutter", "drainage channels"],
+    "aliases": [
+      "sewage",
+      "storm water",
+      "nallah",
+      "wastewater",
+      "gutter",
+      "drainage channels"
+    ],
     "note": "Sewage cleaning, storm water drainage channels, nallah deepening, and wastewater discharge control in Nagpur",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "drainage",
+      "hi": "जल निकासी",
+      "mr": "पाणी निचरा"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "सीवेज",
+        "नाला",
+        "बारिश का पानी",
+        "गटर सफाई",
+        "सांडपाणी"
+      ],
+      "mr": [
+        "सांडपाणी",
+        "नाला",
+        "पावसाचे पाणी",
+        "गटार स्वच्छता",
+        "जलमार्ग"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur Municipal Corporation Works Dept": {
+        "hi": "नागपुर नगर निगम कार्य विभाग",
+        "mr": "नागपूर महानगरपालिका कामकाज विभाग"
+      },
+      "Public Health Engineering Department": {
+        "hi": "लोक स्वास्थ्य अभियांत्रिकी विभाग",
+        "mr": "सार्वजनिक आरोग्य अभियांत्रिकी विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-017",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "garbage collection",
-    "departments": ["Health and Sanitation Department"],
+    "departments": [
+      "Health and Sanitation Department"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["solid waste", "dump yard", "road sweeping", "garbage truck", "trash pickup", "waste disposal"],
+    "aliases": [
+      "solid waste",
+      "dump yard",
+      "road sweeping",
+      "garbage truck",
+      "trash pickup",
+      "waste disposal"
+    ],
     "note": "Solid municipal waste disposal, garbage truck routes, dump yard management, and road sweeping across Nagpur wards",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "garbage collection",
+      "hi": "कचरा संग्रहण",
+      "mr": "कचरा संकलन"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "कचरा उठाव",
+        "सफाई",
+        "कचरा डंप",
+        "रोड स्वीपिंग",
+        "कचरा निपटान"
+      ],
+      "mr": [
+        "कचरा उचल",
+        "रस्ता झाडू",
+        "कचरा डेपो",
+        "स्वच्छता विभाग",
+        "कचरा विल्हेवाट"
+      ]
+    },
+    "departments_i18n": {
+      "Health and Sanitation Department": {
+        "hi": "स्वास्थ्य एवं स्वच्छता विभाग",
+        "mr": "आरोग्य व स्वच्छता विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-018",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "street lights",
-    "departments": ["Electrical Maintenance Wing"],
+    "departments": [
+      "Electrical Maintenance Wing"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["street light pole", "darkness", "sodium vapor", "LED conversion", "cable fault"],
+    "aliases": [
+      "street light pole",
+      "darkness",
+      "sodium vapor",
+      "LED conversion",
+      "cable fault"
+    ],
     "note": "Public street light poles, darkness complaints, sodium vapor to LED conversions, and cable faults on Nagpur roadways",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "street lights",
+      "hi": "स्ट्रीट लाइट",
+      "mr": "पथदिवे"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "स्ट्रीट लाइट खंभा",
+        "अंधेरा",
+        "सोडियम वाष्प दीपक",
+        "केबल फॉल्ट",
+        "लाइट खराब"
+      ],
+      "mr": [
+        "पथदिव्याचा खांब",
+        "अंधार",
+        "केबल फॉल्ट",
+        "दिवे बंद",
+        "वीज दिवे"
+      ]
+    },
+    "departments_i18n": {
+      "Electrical Maintenance Wing": {
+        "hi": "विद्युत रखरखाव विंग",
+        "mr": "विद्युत देखभाल विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-019",
@@ -241,9 +987,50 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["gmc hospital", "hospital beds", "rural hospital", "maternity ward", "disease surveillance", "healthcare"],
+    "aliases": [
+      "gmc hospital",
+      "hospital beds",
+      "rural hospital",
+      "maternity ward",
+      "disease surveillance",
+      "healthcare"
+    ],
     "note": "Government Medical College hospital beds, rural hospital equipment, maternity ward facilities, and disease epidemic surveillance",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "government hospital",
+      "hi": "सरकारी अस्पताल",
+      "mr": "शासकीय रुग्णालय"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "अस्पताल बेड",
+        "ग्रामीण अस्पताल",
+        "प्रसूति वार्ड",
+        "रोग निगरानी",
+        "स्वास्थ्य सेवा"
+      ],
+      "mr": [
+        "रुग्णालयातील खाटा",
+        "ग्रामीण रुग्णालय",
+        "प्रसूती विभाग",
+        "रोग निगराणी",
+        "आरोग्य सेवा"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur District Health Department": {
+        "hi": "नागपुर जिला स्वास्थ्य विभाग",
+        "mr": "नागपूर जिल्हा आरोग्य विभाग"
+      },
+      "State Directorate of Health Services": {
+        "hi": "राज्य स्वास्थ्य सेवा निदेशालय",
+        "mr": "राज्य आरोग्य सेवा संचालनालय"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-020",
@@ -256,32 +1043,142 @@
     ],
     "jurisdiction": "shared",
     "jurisdiction_type": "shared",
-    "aliases": ["traffic junction", "broken signal", "traffic light", "crossing signal", "intersection"],
+    "aliases": [
+      "traffic junction",
+      "broken signal",
+      "traffic light",
+      "crossing signal",
+      "intersection"
+    ],
     "note": "Traffic junction signals, timer faults, broken red/green lights, and pedestrian crossing signal posts at busy intersections",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "traffic signals",
+      "hi": "यातायात सिग्नल",
+      "mr": "वाहतूक सिग्नल"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "ट्रैफिक लाइट",
+        "चौराहा",
+        "खराब सिग्नल",
+        "सिग्नल टाइमर"
+      ],
+      "mr": [
+        "वाहतूक दिवे",
+        "चौकातील सिग्नल",
+        "बिघडलेला सिग्नल",
+        "सिग्नल टाइमर"
+      ]
+    },
+    "departments_i18n": {
+      "Traffic Police Department": {
+        "hi": "यातायात पुलिस विभाग",
+        "mr": "वाहतूक पोलीस विभाग"
+      },
+      "Nagpur Municipal Corporation Works Dept": {
+        "hi": "नागपुर नगर निगम कार्य विभाग",
+        "mr": "नागपूर महानगरपालिका कामकाज विभाग"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-021",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "land records",
-    "departments": ["Nagpur District Revenue Collectorate"],
+    "departments": [
+      "Nagpur District Revenue Collectorate"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["agricultural land records", "encumbrance certificate", "talathi mutation", "survey plot partition"],
+    "aliases": [
+      "agricultural land records",
+      "encumbrance certificate",
+      "talathi mutation",
+      "survey plot partition"
+    ],
     "note": "Agricultural land records, encumbrance certificates, Talathi land mutation orders, and survey plot partition disputes",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "land records",
+      "hi": "भूमि अभिलेख",
+      "mr": "जमीन अभिलेख"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "भूमि स्वामित्व",
+        "भूमि नामांतरण",
+        "भूमि सर्वेक्षण",
+        "भूखंड विभाजन",
+        "खसरा उतारा"
+      ],
+      "mr": [
+        "जमीन फेरफार",
+        "जमीन मोजणी",
+        "भूखंड विभाजन",
+        "सातबारा उतारा"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur District Revenue Collectorate": {
+        "hi": "नागपुर जिला राजस्व कलेक्ट्रेट",
+        "mr": "नागपूर जिल्हा महसूल कार्यालय"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   },
   {
     "id": "EH-022",
     "state": "Maharashtra",
     "district": "Nagpur",
     "subject": "building permissions",
-    "departments": ["Nagpur Improvement Trust & Town Planning"],
+    "departments": [
+      "Nagpur Improvement Trust & Town Planning"
+    ],
     "jurisdiction": "single",
     "jurisdiction_type": "single",
-    "aliases": ["building map", "unauthorized construction", "regularization", "sanction permission"],
+    "aliases": [
+      "building map",
+      "unauthorized construction",
+      "regularization",
+      "sanction permission"
+    ],
     "note": "Approval of commercial/residential building maps, unauthorized construction notices, and regularization applications",
-    "source": "MVP / Demonstration Jurisdiction Dataset"
+    "source": "MVP / Demonstration Jurisdiction Dataset",
+    "subject_i18n": {
+      "en": "building permissions",
+      "hi": "भवन निर्माण अनुमति",
+      "mr": "बांधकाम परवाने"
+    },
+    "aliases_i18n": {
+      "hi": [
+        "भवन नक्शा",
+        "अवैध निर्माण",
+        "नियमितीकरण",
+        "निर्माण अनुमति",
+        "संरचना नियम"
+      ],
+      "mr": [
+        "बांधकाम नकाशा",
+        "बेकायदेशीर बांधकाम",
+        "नियमितीकरण",
+        "बांधकाम परवाना"
+      ]
+    },
+    "departments_i18n": {
+      "Nagpur Improvement Trust & Town Planning": {
+        "hi": "नागपुर सुधार न्यास एवं नगर नियोजन",
+        "mr": "नागपूर सुधार प्रन्यास व नगररचना"
+      }
+    },
+    "verified": false,
+    "last_updated": "2026-09-26",
+    "version": "2026.09"
   }
 ]
