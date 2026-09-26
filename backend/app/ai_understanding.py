@@ -141,7 +141,7 @@ def normalize_language_hint(hint: Optional[str]) -> Optional[str]:
     """Normalize a caller-provided language hint ('EN', 'hi', ...) to a code."""
     if not hint:
         return None
-    code = str(hint).strip().lower()
+    code = hint.strip().lower()
     if len(code) > 2:
         code = code[:2]
     return code if code in SUPPORTED_LANGUAGES else None
@@ -331,6 +331,8 @@ def understand_rti_text(
     API contracts remain stable across languages.
     """
     resolved_language = language if language in SUPPORTED_LANGUAGES else detect_language(text, hint=language)
+    if resolved_language is None:
+        resolved_language = DEFAULT_LANGUAGE
     tokens = clean_and_tokenize(text)
     keywords = extract_keywords(tokens, resolved_language)
     stemmed_token_set = {stem_word(t) for t in tokens}

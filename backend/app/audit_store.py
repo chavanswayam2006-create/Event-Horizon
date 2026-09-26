@@ -160,7 +160,7 @@ def list_audit_records(limit: int = AUDIT_DEFAULT_LIMIT, path: Optional[Path] = 
         return []
 
     try:
-        bounded = max(1, min(int(limit), AUDIT_MAX_RECORDS))
+        bounded = max(1, min(limit, AUDIT_MAX_RECORDS))
     except (TypeError, ValueError):
         bounded = AUDIT_DEFAULT_LIMIT
     return list(reversed(records[-bounded:]))

@@ -37,9 +37,9 @@ from app.config import (
 )
 
 try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    from sklearn.pipeline import FeatureUnion
+    from sklearn.feature_extraction.text import TfidfVectorizer  # type: ignore[import-not-found]
+    from sklearn.metrics.pairwise import cosine_similarity  # type: ignore[import-not-found]
+    from sklearn.pipeline import FeatureUnion  # type: ignore[import-not-found]
     SKLEARN_AVAILABLE = True
 except ImportError:
     SKLEARN_AVAILABLE = False
@@ -95,12 +95,11 @@ def _build_language_vectorizer(language: str):
         # Day 1/2 configuration is intentionally preserved for calibration.
         return TfidfVectorizer(ngram_range=(1, 2), stop_words="english")
     stopwords = sorted(LANGUAGE_STOPWORDS.get(language, set()))
-    return FeatureUnion(
-        [
-            ("word", TfidfVectorizer(ngram_range=(1, 2), stop_words=stopwords)),
-            ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 4))),
-        ]
-    )
+    transformers = [
+        ("word", TfidfVectorizer(ngram_range=(1, 2), stop_words=stopwords)),
+        ("char", TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 4))),
+    ]
+    return FeatureUnion(transformers)  # type: ignore[arg-type,return-value]
 
 
 class StarMapIndex:
@@ -142,7 +141,7 @@ class StarMapIndex:
     def resolve_language(self, language: Optional[str]) -> str:
         """Map an unsupported/empty language to a language this index has."""
         if language in self.proc_corpora:
-            return str(language)
+            return language
         if DEFAULT_LANGUAGE in self.proc_corpora:
             return DEFAULT_LANGUAGE
         return next(iter(self.proc_corpora), DEFAULT_LANGUAGE)
@@ -303,6 +302,8 @@ def rank_rules(
 
     resolved_language = CACHED_INDEX.resolve_language(language)
     resolved_display = display_language if display_language in SUPPORTED_LANGUAGES else resolved_language
+    if resolved_display is None:
+        resolved_display = resolved_language
 
     raw_similarities = CACHED_INDEX.compute_similarities(application_text, resolved_language)
     keywords = query_keywords if query_keywords is not None else application_text.split()
